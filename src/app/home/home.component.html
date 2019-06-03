@@ -1,0 +1,37 @@
+<!-- <div style="display: block">
+    <canvas baseChart
+            [data]="lineChartData"
+            [labels]="lineChartLabels"
+            [chartType]="lineChartType">
+    </canvas>
+</div> -->
+
+<div>
+    <p> verticalement : le suivi d'avancement cumulé physique </p>
+    <p> Horizontalement : la période </p>
+</div>
+
+<form [formGroup]="constatFrom">
+    <div class="container">
+        <div class="item">
+            <div class="form-group">
+                <mat-form-field>
+                    <mat-select class="form-control" placeholder="Sous-rubrique" name="id_sous_rubrique" formControlName="id_sous_rubrique">
+                        <mat-option *ngFor="let constat of constatsList" [value]="constat.id_sous_rubrique"> {{constat.id_sous_rubrique}} </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="item">
+            <div class="form-group">
+                <button type="submit" mat-raised-button color="accent" (click)="afficherDiargamme()"> Afficher le diagramme </button>            
+            </div>
+        </div>
+    </div>
+</form>
+
+<div *ngIf="chart">
+    <canvas id="canvas">{{ chart }}</canvas>
+</div>

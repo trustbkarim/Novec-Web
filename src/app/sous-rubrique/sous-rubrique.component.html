@@ -1,0 +1,82 @@
+<div class="table_container">
+  <div class="table_item">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        
+        <!-- Colonne id_constat -->
+        <ng-container matColumnDef="id_sous_rubrique">
+          <th mat-header-cell *matHeaderCellDef> ID. </th>
+          <td mat-cell *matCellDef="let sousRubrique"> {{sousRubrique.id_sous_rubrique}} </td>
+        </ng-container>
+      
+        <!-- Colonne id_marché -->
+        <ng-container matColumnDef="id_marche">
+          <th mat-header-cell *matHeaderCellDef> Référence marché </th>
+          <td mat-cell *matCellDef="let sousRubrique"> {{sousRubrique.id_marche}} </td>
+        </ng-container>
+      
+        <!-- Colonne id_rubrique -->
+        <ng-container matColumnDef="id_rubrique">
+          <th mat-header-cell *matHeaderCellDef> Référence rubrique </th>
+          <td mat-cell *matCellDef="let sousRubrique"> {{sousRubrique.id_rubrique}} </td>
+        </ng-container>
+      
+        <!-- Colonne id_sous_rubrique -->
+        <ng-container matColumnDef="lib_sous_rubrique">
+          <th mat-header-cell *matHeaderCellDef> Librairie sous rubrique </th>
+          <td mat-cell *matCellDef="let sousRubrique"> {{sousRubrique.lib_sous_rubrique}} </td>
+        </ng-container>
+
+        <!-- Colonne id_sous_rubrique -->
+        <ng-container matColumnDef="unite">
+          <th mat-header-cell *matHeaderCellDef> Unité </th>
+          <td mat-cell *matCellDef="let sousRubrique"> {{sousRubrique.unite}} </td>
+        </ng-container>
+
+        <!-- Colonne id_sous_rubrique -->
+        <ng-container matColumnDef="valeur_cible">
+          <th mat-header-cell *matHeaderCellDef> Valeur ciblé </th>
+          <td mat-cell *matCellDef="let sousRubrique"> {{sousRubrique.valeur_cible}} </td>
+        </ng-container>
+
+        <!-- Colonne id_sous_rubrique -->
+        <ng-container matColumnDef="poids">
+          <th mat-header-cell *matHeaderCellDef> Poids </th>
+          <td mat-cell *matCellDef="let sousRubrique"> {{sousRubrique.poids}} </td>
+        </ng-container>
+
+        <!-- Colonne editer -->
+        <ng-container matColumnDef="editer">
+            <th mat-header-cell *matHeaderCellDef> </th>
+            <td mat-cell *matCellDef="let constat">
+              <button mat-button (click)="editDialog(employee)"> <mat-icon> brush </mat-icon> </button>
+            </td>
+        </ng-container>
+
+        <!-- Colonne supprimer -->
+        <ng-container matColumnDef="supprimer">
+              <th mat-header-cell *matHeaderCellDef> </th>
+              <td mat-cell *matCellDef="let constat">
+                  <button mat-button (click)="deleteDialog(employee.id)"> <mat-icon> delete </mat-icon> </button>
+              </td>
+        </ng-container>
+
+        <!-- Colonne ajouter -->
+        <ng-container matColumnDef="ajouter">
+            <th mat-header-cell *matHeaderCellDef>
+              <button mat-raised-button (click)="addDialog()" color="accent"> <mat-icon> add </mat-icon> </button>
+            </th>
+            <td mat-cell *matCellDef="let constat">
+              <button mat-button> </button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" ></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+  <div class="table_item">
+    <div *ngIf="isLoading">
+        <mat-progress-spinner color="accent" mode="indeterminate"> </mat-progress-spinner>
+    </div>
+  </div>
+</div>

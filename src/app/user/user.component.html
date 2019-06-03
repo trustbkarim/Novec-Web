@@ -1,0 +1,30 @@
+<form [formGroup]="userForm">
+    <div class="login_container">
+        <div class="login_item">
+            <div class="form-group">
+                <mat-form-field hintLabel="Max 100 character">
+                  <input type="text" name="email" matInput formControlName="email" class="form-control" maxlength="100" placeholder="E-mail" required autocomplete="off">
+                  <mat-error *ngIf="submitted && userForm.get('email').hasError('required')">
+                      Email is required 
+                  </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="login_item">
+            <div class="form-group" hintLabel="Max 60 character">
+                <mat-form-field>
+                  <input type="text" name="password" matInput formControlName="password" class="form-control" maxlength="60" placeholder="Password" [type]="hide ? 'password' : 'text'" required autocomplete="off">
+                  <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  <mat-error *ngIf="submitted && userForm.get('password').hasError('required')">
+                      Password is required 
+                  </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="login_item">
+            <div class="form-group">
+                <button type="submit" mat-raised-button color="accent" [disabled]="userForm.pristine || userForm.invalid" (click)="login()"> Loggin </button>
+            </div>
+        </div>
+    </div>
+  </form>
