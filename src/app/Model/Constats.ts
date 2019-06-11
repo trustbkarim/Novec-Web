@@ -5,5 +5,5 @@ export class Constats
     id_rubrique : Number;
     id_sous_rubrique : Number;
     id_periode : Number;
-    valeur_constat : Number;
+    valeur_constat : number;
 }

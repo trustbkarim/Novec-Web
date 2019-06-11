@@ -6,21 +6,18 @@
     </canvas>
 </div> -->
 
-<div>
-    <p> verticalement : le suivi d'avancement cumulé physique </p>
-    <p> Horizontalement : la période </p>
-</div>
 
-<form [formGroup]="constatFrom">
+<!-- Constat form -->
+<!-- <form [formGroup]="constatFrom">
     <div class="container">
         <div class="item">
             <div class="form-group">
                 <mat-form-field>
                     <mat-select class="form-control" placeholder="Sous-rubrique" name="id_sous_rubrique" formControlName="id_sous_rubrique">
-                        <mat-option *ngFor="let constat of constatsList" [value]="constat.id_sous_rubrique"> {{constat.id_sous_rubrique}} </mat-option>
+                        <mat-option *ngFor="let constat of constatsList" [value]="constat.id_marche"> {{constat.id_marche}} </mat-option>
                     </mat-select>
                 </mat-form-field>
-            </div>
+            </div> 
         </div>
     </div>
     <div class="container">
@@ -30,7 +27,75 @@
             </div>
         </div>
     </div>
+</form> -->
+
+<!-- Marché form -->
+<!-- <form [formGroup]="marcheForm">
+    <div class="container">
+        <div class="item">
+            <div class="form-group">
+                <mat-form-field>
+                    <mat-select class="form-control" placeholder="Projets" name="num_marche" formControlName="num_marche">
+                        <mat-option *ngFor="let marche of marchesList" [value]="marche.num_marche"> {{marche.intitule}} </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="item">
+            <div class="form-group">
+                <button type="submit" mat-raised-button color="accent" (click)="diagrammeProjet()"> Diagramme de projet </button>            
+            </div>
+        </div>
+    </div>
+</form> -->
+
+
+<!-- Rubrique form -->
+<form [formGroup]="rubriqueForm">
+    <div class="container">
+        <div class="item">
+            <div class="form-group">
+                <mat-form-field>
+                    <mat-select class="form-control" placeholder="Rubriques" name="id" formControlName="id">
+                        <mat-option *ngFor="let rubrique of rubriquesList" [value]="rubrique.id"> {{rubrique.lib_rubrique}} </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="item">
+            <div class="form-group">
+                <button type="submit" mat-raised-button color="accent" (click)="diagrammeRubrique()"> Diagramme de rubrique </button>            
+            </div>
+        </div>
+    </div>
 </form>
+
+<!-- Sous-Rubrique form -->
+<form [formGroup]="sousRubriqueForm">
+    <div class="container">
+        <div class="item">
+            <div class="form-group">
+                <mat-form-field>
+                    <mat-select class="form-control" placeholder="Sous rubrique" name="id_sous_rubrique" formControlName="id_sous_rubrique">
+                        <mat-option *ngFor="let sousRubrique of sousRubriquesList" [value]="sousRubrique.id_sous_rubrique"> {{sousRubrique.lib_sous_rubrique}} </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="item">
+            <div class="form-group">
+                <button type="submit" mat-raised-button color="accent" (click)="diagrammeSousRubrique()"> Diagramme de sous-rubrique </button>            
+            </div>
+        </div>
+    </div>
+</form>
+
 
 <div *ngIf="chart">
     <canvas id="canvas">{{ chart }}</canvas>

@@ -1,9 +1,9 @@
 export class Marches
 {
     id : Number;
-    num_marché : String;
-    intitulé : String;
+    num_marche : Number;
+    intitule : String;
     durée_jour : Number;
     durée_mois : Number;
-    montant_marché : Number;
+    montant_marche : Number;
 }
