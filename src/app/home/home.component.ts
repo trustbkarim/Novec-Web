@@ -24,15 +24,21 @@ export class HomeComponent implements OnInit {
   // public lineChartData = [0, 25, 90, 55];
   // public lineChartType = 'line';
 
-  data: Periodes[];
+  data : Periodes[];
 
   // Les valeurs du diargramme de projet
   periode_diagramme_projet = [];
   suivi_avancement_cum_physique_diagramme_projet = [];
 
   // Les valeurs du diagramme du sous-rubrique
-  periode_diagramme_sous_rubrique = [];
-  suivi_avancement_cum_physique_diagramme_sous_rubrique = [];
+  periode_diagramme = [];
+  periode_diagramme_rubrique = [];
+
+  // La valeur à afficher pour le diagramme de sous-rubrique
+  suivi_avancement_constat_sur_valeur_cible = [];
+
+  // Valeur à afficher pour le diagramme de rubrique
+  valeur_du_diagramme_rubrique = [];
 
   chart = <any>[];
 
@@ -51,8 +57,14 @@ export class HomeComponent implements OnInit {
   // Liste des rubriques
   rubriquesList : Rubriques[];
 
+  // Pour stocker l'objet sous-rubrique, afin d'avoir la période pour afficher le diagramme
+  sousRubriqueObjet : SousRubriques;
+
   // Liste des périodes
-  periodesListPourSousRubrique : Periodes[];
+  // periodesList : Periodes[];
+
+  // Liste des id de périodes
+  // periodeID : Number[] = [];
 
   // Valeur du constat récupéré du SELECT
   valeurConstat : Number;
@@ -63,6 +75,15 @@ export class HomeComponent implements OnInit {
   // Valeur de la sous-rubrique récupéré du SELECT
   valeurSousRubrique : Number;
 
+  // Valeur de la rubrique récupéré du SELECT
+  valeurRubrique : Number;
+
+  // Valeur du diagramme de la rubrique 
+  valeur_multiplie_par_ponderation = [];
+
+  // List des sous-rubriques pour le compte d'une rubrique spécifique
+  sous_rubriques_depend_une_rubrique : SousRubriques[] = [];
+
   // form-group
   constatFrom : FormGroup;
 
@@ -71,6 +92,9 @@ export class HomeComponent implements OnInit {
 
   // Sous-rubrique form
   sousRubriqueForm : FormGroup;
+
+  // Rubrique fomr
+  rubriqueForm : FormGroup;
    
   constructor(private rubriqueService : RubriqueService, private constatService : ConstatService, private periodService : PeriodeService, private sousRubriqueService : SousRubriqueService, private marcheService : MarcheService, private formBuilder : FormBuilder, private http : HttpClient) 
   { }
@@ -88,13 +112,14 @@ export class HomeComponent implements OnInit {
     // )
 
     // Remplir le select de la sous-rubrique
-    this.sousRubriqueService.sousRubriqueList()
-    .subscribe(
-      response =>
-      {
-        this.sousRubriquesList = response;
-      }
-    )
+    // this.sousRubriqueService.sousRubriqueList()
+    // .subscribe(
+    //   response =>
+    //   {
+    //     this.sousRubriquesList = response;
+    //     // this.valeur_periode_diagramme_sous_rubrique = response;
+    //   }
+    // )
 
     // Remplir le select du marché 
     this.marcheService.marcheList()
@@ -106,13 +131,13 @@ export class HomeComponent implements OnInit {
     );
 
     // Récupéré les période 
-    this.periodService.periodeList()
-    .subscribe(
-      response => 
-      {
-        this.periodesListPourSousRubrique = response;
-      }
-    )
+    // this.periodService.periodeList()
+    // .subscribe(
+    //   response => 
+    //   {
+    //     this.periodesListPourSousRubrique = response;
+    //   }
+    // )
 
     // Récupéré le select des rubriques
     this.rubriqueService.rubriqueList()
@@ -137,125 +162,119 @@ export class HomeComponent implements OnInit {
     // Validations de la sous-rubrique
     this.sousRubriqueForm = this.formBuilder.group({
       id_sous_rubrique : [null, Validators.required]
-    })
+    });
+
+    // Validations de la rubrique
+    this.rubriqueForm = this.formBuilder.group({
+      id : [null, Validators.required]
+    });
     
   }
 
   // Diagramme selon la selection du projet
-  diagrammeProjet()
-  {
-    // Valeur du marché récupéré
-    this.valeurMarche = this.marcheForm.get('num_marche').value;
+  // diagrammeProjet()
+  // {
+  //   // Valeur du marché récupéré
+  //   this.valeurMarche = this.marcheForm.get('num_marche').value;
 
-    this.http.get<Periodes[]>('http://localhost:8000/api/periode')
-    .subscribe((response: Periodes[]) => 
-    {    
-      for(let periode of response)
-      {
-        if(periode.id_projet == this.valeurMarche)
-        {
-            this.periode_diagramme_projet.push(periode.num_periode);
-            this.suivi_avancement_cum_physique_diagramme_projet.push(periode.suivi_avancement_cum_physique);
-        }
-      }
+  //   this.http.get<Periodes[]>('http://localhost:8000/api/periode')
+  //   .subscribe((response: Periodes[]) => 
+  //   {    
+  //     for(let periode of response)
+  //     {
+  //       if(periode.id_projet == this.valeurMarche)
+  //       {
+  //           this.periode_diagramme_projet.push(periode.num_periode);
+  //           this.suivi_avancement_cum_physique_diagramme_projet.push(periode.suivi_avancement_cum_physique);
+  //       }
+  //     }
       
-       this.chart = new Chart('canvas', {
-         type: 'line',
-         data: {
-           labels: this.periode_diagramme_projet,
-           datasets: [
-             {
-               data: this.suivi_avancement_cum_physique_diagramme_projet,
-               borderColor: '#7FB3D5',
-               fill: false
-             }
-           ]
-         },
-         options: {
-           legend: {
-             display: false
-           },
-           scales: {
-             xAxes: [{
-               display: true
-             }],
-             yAxes: [{
-               display: true
-             }],
-           }
-         }
-       });
-     });      
+  //      this.chart = new Chart('canvas', {
+  //        type: 'line',
+  //        data: {
+  //          labels: this.periode_diagramme_projet,
+  //          datasets: [
+  //            {
+  //              data: this.suivi_avancement_cum_physique_diagramme_projet,
+  //              borderColor: '#7FB3D5',
+  //              fill: false
+  //            }
+  //          ]
+  //        },
+  //        options: {
+  //          legend: {
+  //            display: false
+  //          },
+  //          scales: {
+  //            xAxes: [{
+  //              display: true
+  //            }],
+  //            yAxes: [{
+  //              display: true
+  //            }],
+  //          }
+  //        }
+  //      });
+  //    });      
 
-    this.periode_diagramme_projet = [];
-    this.suivi_avancement_cum_physique_diagramme_projet = [];
-  }
+  //   this.periode_diagramme_projet = [];
+  //   this.suivi_avancement_cum_physique_diagramme_projet = [];
+  // }
 
 
   // Fonction pour afficher le diagramme de la sous-rubrique
   diagrammeSousRubrique()
   {
-    this.http.get<Periodes[]>('http://localhost:8000/api/periode')
-    .subscribe(
-      result =>
-      {
-        this.periodesListPourSousRubrique = result;
-      }
-    )
-    // Valeur du marché récupéré
+    // Valeur de la sous-rubrique récupéré
     this.valeurSousRubrique = this.sousRubriqueForm.get('id_sous_rubrique').value;
 
     // Diagramme selon la selection de la sous-rubrique
     this.http.get<Constats[]>('http://localhost:8000/api/constat')
     .subscribe((results: Constats[]) => 
-    { 
+    {
       for(let constat of results)
       {
         for(let sousRubrique of this.sousRubriquesList)
-        {          
-            // if(sousRubrique.id_sous_rubrique == constat.id_sous_rubrique)
-            // {
-            //   this.suivi_avancement_cum_physique_diagramme_sous_rubrique.push((constat.valeur_constat / sousRubrique.valeur_cible));
-            // }
-
-            // if(this.valeurSousRubrique == constat.id_sous_rubrique && this.valeurSousRubrique == sousRubrique.id_sous_rubrique)
-            // {
-            //   this.suivi_avancement_cum_physique_diagramme_sous_rubrique.push((constat.valeur_constat / sousRubrique.valeur_cible));
-            // }
-
-            if(this.valeurSousRubrique == constat.id_sous_rubrique)
+        {
+          for(let periode of this.periodesList)
+          {
+            if(this.valeurSousRubrique == sousRubrique.id_sous_rubrique && this.valeurSousRubrique == constat.id_sous_rubrique && periode.id_periode == constat.id_periode)
             {
-              this.suivi_avancement_cum_physique_diagramme_sous_rubrique.push((constat.valeur_constat / sousRubrique.valeur_cible));
+              this.suivi_avancement_constat_sur_valeur_cible.push((constat.valeur_constat / sousRubrique.valeur_cible));
+              this.periode_diagramme.push(constat.id_periode);
+              this.periode_diagramme.sort((a, b) => a - b);
             }
+          }
         }
-      }
-
-      for(let p of this.periodesListPourSousRubrique)
-      {
-        this.periode_diagramme_sous_rubrique.push(p.id_periode);
       }
       
       this.chart = new Chart('canvas', {
         type: 'line',
-        data: {
-          labels: this.periode_diagramme_sous_rubrique,
+        data: 
+        {
+          labels: this.periode_diagramme,
           datasets: [
             {
-              data: this.suivi_avancement_cum_physique_diagramme_sous_rubrique,
+              data: this.suivi_avancement_constat_sur_valeur_cible,
               borderColor: '#7FB3D5',
-              fill: false
+              fill: true
             }
           ]
         },
-        options: {
-          legend: {
+        options: 
+        {
+          legend: 
+          {
             display: false
           },
-          scales: {
-            xAxes: [{
+          scales: 
+          {
+            xAxes: 
+            [{
               display: true
             }],
-            yAxes: [{
+            yAxes: 
+            [{
               display: true
             }],
           }
@@ -264,8 +283,143 @@ export class HomeComponent implements OnInit {
     }
   );
 
-    this.periode_diagramme_sous_rubrique = [];
-    this.suivi_avancement_cum_physique_diagramme_sous_rubrique = [];
+    this.periode_diagramme = [];
+    this.suivi_avancement_constat_sur_valeur_cible = [];
   }
+
+  // Fonction pour afficher le diagramme de la Rubrique
+  diagrammeRubrique()
+  {
+    // récupéré la liste des périodes afin de les affichers sur le Diagramme attendu
+    this.http.get<Periodes[]>('http://localhost:8000/api/periode')
+    .subscribe(
+      result =>
+      {
+        this.periodesList = result;
+      }
+    )
+
+    // Remplire une liste de constat
+    this.http.get<Constats[]>('http://localhost:8000/api/constat')
+    .subscribe((results: Constats[]) => 
+    {
+      this.constatsList = results;
+    });
+
+
+    // Valeur de la rubrique récupéré
+    this.valeurRubrique = this.rubriqueForm.get('id').value;
+
+    // Remplir le SELECT de la sous-rubrique qui dépende d'une rubrique
+    this.http.get<SousRubriques[]>('http://localhost:8000/api/sousRubrique')
+    .subscribe(
+      result => 
+      {
+
+        /* -------------------ça marche -------------------------- */
+        // for(let sous_rubrique of result)
+        // {
+        //   for(let rubrique of this.rubriquesList)
+        //   {
+        //     if(this.valeurRubrique == rubrique.id && this.valeurRubrique == sous_rubrique.id_rubrique)
+        //     {
+        //       // Remplir le SELECT du sous-rurique
+        //       this.sous_rubriques_depend_une_rubrique.push(sous_rubrique);
+        //       this.sousRubriquesList = this.sous_rubriques_depend_une_rubrique;
+        //     }
+        //   }
+        // }
+
+
+        // for(let constat of this.constatsList)
+        // {
+        //   // Affichage du diagramme de la rubrique
+        //   this.valeur_multiplie_par_ponderation = this.sousRubriquesList.map(i => i.valeur_cible * i.poids);
+        //   this.periode_diagramme.push(constat.id_periode);
+        //   this.periode_diagramme.sort((a, b) => a - b) 
+        // }
+
+        /* -------------------ça marche -------------------------- */
+
+        // Remplir le SELECT du sous-rurique
+        for(let sous_rubrique of result)
+        {
+          for(let rubrique of this.rubriquesList)
+          {
+            if(this.valeurRubrique == rubrique.id && this.valeurRubrique == sous_rubrique.id_rubrique)
+            {
+              this.sous_rubriques_depend_une_rubrique.push(sous_rubrique);
+              this.sousRubriquesList = this.sous_rubriques_depend_une_rubrique;
+            }
+          }
+        }
+
+
+        // Affichage du diagramme de la rubrique
+        for(let constat of this.constatsList)
+        {         
+          this.valeur_multiplie_par_ponderation = this.sousRubriquesList.map(i => i.valeur_cible * i.poids);
+
+          this.periode_diagramme.push(constat.id_periode);
+          this.periode_diagramme.sort((a, b) => a - b) 
+        }
+
+        // Supprimer les valeurs dupliquées des périodes  
+        this.periode_diagramme = this.periode_diagramme.filter((el, i, a) => i === a.indexOf(el));
+
+        /* -------------------ça marche -------------------------- */
+        // var r = [];
+        // this.periode_diagramme.forEach((item, index) =>
+        // {
+        //   if(r.findIndex(i => i.Value == item.Value) === -1)
+        //   {
+        //     r.push(item);
+        //     console.log('r :', r);
+        //   }
+        // }
+        // );
+
+
+        this.chart = new Chart('canvas', {
+          type: 'line',
+          data: 
+          {
+            labels: this.periode_diagramme,
+            datasets: [
+              {
+                data: this.valeur_multiplie_par_ponderation,
+                borderColor: '#7FB3D5',
+                fill: true
+              }
+            ]
+          },
+          options: 
+          {
+            legend: 
+            {
+              display: false
+            },
+            scales: 
+            {
+              xAxes: 
+              [{
+                display: true
+              }],
+              yAxes: 
+              [{
+                display: true
+              }],
+            }
+          }
+        });
+
+      }
+    )
+
+    this.valeur_multiplie_par_ponderation = [];
+    this.sous_rubriques_depend_une_rubrique = [];
+    this.periode_diagramme = [];
+    // this.suivi_avancement_constat_sur_valeur_cible = [];
+   }
 
 }

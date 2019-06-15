@@ -6,5 +6,5 @@ export class SousRubriques
     lib_sous_rubrique : String;
     unite : String;
     valeur_cible : number;
-    poids : Number;
+    poids : number;
 }
