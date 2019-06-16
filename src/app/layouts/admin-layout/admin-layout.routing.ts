@@ -21,5 +21,5 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'periode',        component: PeriodeComponent },
     { path: 'rubrique',       component: RubriqueComponent },
     { path: 'sousRubrique',   component: SousRubriqueComponent },
-    { path: 'typography',     component: TypographyComponent },   
+    // { path: 'typography',     component: TypographyComponent },   
 ];

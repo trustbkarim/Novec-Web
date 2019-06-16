@@ -16,7 +16,7 @@ import { Rubriques } from 'app/Model/Rubriques';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
 
@@ -366,18 +366,6 @@ export class HomeComponent implements OnInit {
 
         // Supprimer les valeurs dupliquées des périodes  
         this.periode_diagramme = this.periode_diagramme.filter((el, i, a) => i === a.indexOf(el));
-
-        /* -------------------ça marche -------------------------- */
-        // var r = [];
-        // this.periode_diagramme.forEach((item, index) =>
-        // {
-        //   if(r.findIndex(i => i.Value == item.Value) === -1)
-        //   {
-        //     r.push(item);
-        //     console.log('r :', r);
-        //   }
-        // }
-        // );
 
 
         this.chart = new Chart('canvas', {

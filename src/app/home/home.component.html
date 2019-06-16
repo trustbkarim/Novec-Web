@@ -53,7 +53,7 @@
 
 
 <!-- Rubrique form -->
-<form [formGroup]="rubriqueForm">
+<!-- <form [formGroup]="rubriqueForm">
     <div class="container">
         <div class="item">
             <div class="form-group">
@@ -62,6 +62,31 @@
                         <mat-option *ngFor="let rubrique of rubriquesList" [value]="rubrique.id"> {{rubrique.lib_rubrique}} </mat-option>
                     </mat-select>
                 </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="item">
+            <div class="form-group">
+                <button type="submit" mat-raised-button color="accent" (click)="diagrammeRubrique()"> Diagramme de rubrique </button>            
+            </div>
+        </div>
+    </div>
+</form> -->
+
+<form [formGroup]="rubriqueForm">
+    <div class="container">
+        <div class="item">
+            <div class="under_container">
+                <div class="under_item">
+                    <div class="form-group">
+                        <mat-form-field>
+                            <mat-select class="form-control" placeholder="Rubriques" name="id" formControlName="id">
+                                <mat-option *ngFor="let rubrique of rubriquesList" [value]="rubrique.id"> {{rubrique.lib_rubrique}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
