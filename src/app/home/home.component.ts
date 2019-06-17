@@ -81,8 +81,11 @@ export class HomeComponent implements OnInit {
   // Valeur du diagramme de la rubrique 
   valeur_multiplie_par_ponderation = [];
 
-  // List des sous-rubriques pour le compte d'une rubrique spécifique
+  // Liste des sous-rubriques pour le compte d'une rubrique spécifique
   sous_rubriques_depend_une_rubrique : SousRubriques[] = [];
+
+  // Liste des rubriques dépond un marché quelconque
+  rubrique_depond_un_marche : Rubriques[] = [];
 
   // form-group
   constatFrom : FormGroup;
@@ -140,13 +143,13 @@ export class HomeComponent implements OnInit {
     // )
 
     // Récupéré le select des rubriques
-    this.rubriqueService.rubriqueList()
-    .subscribe(
-      response =>
-      {
-        this.rubriquesList = response
-      }
-    )
+    // this.rubriqueService.rubriqueList()
+    // .subscribe(
+    //   response =>
+    //   {
+    //     this.rubriquesList = response
+    //   }
+    // )
     
 
     // Validation
@@ -156,7 +159,7 @@ export class HomeComponent implements OnInit {
 
     // Validations du marché
     this.marcheForm = this.formBuilder.group({
-      num_marche : [null, Validators.required]
+      id_marche : [null, Validators.required]
     });
 
     // Validations de la sous-rubrique
@@ -171,56 +174,36 @@ export class HomeComponent implements OnInit {
     
   }
 
-  // Diagramme selon la selection du projet
-  // diagrammeProjet()
-  // {
-  //   // Valeur du marché récupéré
-  //   this.valeurMarche = this.marcheForm.get('num_marche').value;
+  diagrammeMarche()
+  {
 
-  //   this.http.get<Periodes[]>('http://localhost:8000/api/periode')
-  //   .subscribe((response: Periodes[]) => 
-  //   {    
-  //     for(let periode of response)
-  //     {
-  //       if(periode.id_projet == this.valeurMarche)
-  //       {
-  //           this.periode_diagramme_projet.push(periode.num_periode);
-  //           this.suivi_avancement_cum_physique_diagramme_projet.push(periode.suivi_avancement_cum_physique);
-  //       }
-  //     }
-      
-  //      this.chart = new Chart('canvas', {
-  //        type: 'line',
-  //        data: {
-  //          labels: this.periode_diagramme_projet,
-  //          datasets: [
-  //            {
-  //              data: this.suivi_avancement_cum_physique_diagramme_projet,
-  //              borderColor: '#7FB3D5',
-  //              fill: false
-  //            }
-  //          ]
-  //        },
-  //        options: {
-  //          legend: {
-  //            display: false
-  //          },
-  //          scales: {
-  //            xAxes: [{
-  //              display: true
-  //            }],
-  //            yAxes: [{
-  //              display: true
-  //            }],
-  //          }
-  //        }
-  //      });
-  //    });      
+    // Valeur du marché récupéré
+    this.valeurMarche = this.marcheForm.get('id_marche').value;
 
-  //   this.periode_diagramme_projet = [];
-  //   this.suivi_avancement_cum_physique_diagramme_projet = [];
-  // }
 
+    this.http.get<Rubriques[]>('http://localhost:8000/api/rubrique')
+    .subscribe(
+      result =>
+      {
+        // Remplir le SELECT du sous-rurique
+        for(let rubrique of result)
+        {
+          for(let marche of this.marchesList)
+          {
+            if(this.valeurMarche == marche.id_marche && this.valeurMarche == rubrique.id_marche)
+            {
+              this.rubrique_depond_un_marche.push(rubrique);
+              // console.log('rubrique_depond_un_marche',this.rubrique_depond_un_marche)
+              this.rubriquesList = this.rubrique_depond_un_marche;
+              // console.log('rubriquesList',this.rubriquesList)
+            }
+          }
+        }
+      }
+    );
+
+    this.rubrique_depond_un_marche = [];
+  }
 
   // Fonction pour afficher le diagramme de la sous-rubrique
   diagrammeSousRubrique()

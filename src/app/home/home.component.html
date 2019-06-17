@@ -74,6 +74,31 @@
     </div>
 </form> -->
 
+<!-- Marché form -->
+<form [formGroup]="marcheForm">
+    <div class="container">
+        <div class="item">
+            Seléctionner un marché : 
+        </div>
+        <div class="item">
+            <div class="form-group">
+                <mat-form-field>
+                    <mat-select class="form-control" placeholder="Marché" name="id_marche" formControlName="id_marche">
+                        <mat-option *ngFor="let marche of marchesList" [value]="marche.id_marche"> {{marche.intitule}} </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="item">
+            <div class="form-group">
+                <button type="submit" mat-raised-button color="accent" (click)="diagrammeMarche()"> Diagramme de marché </button>            
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<!-- Rubrique form -->
 <form [formGroup]="rubriqueForm">
     <div class="container">
         <div class="item">

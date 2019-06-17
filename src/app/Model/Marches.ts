@@ -1,6 +1,6 @@
 export class Marches
 {
-    id : Number;
+    id_marche : Number;
     num_marche : Number;
     intitule : String;
     durée_jour : Number;
