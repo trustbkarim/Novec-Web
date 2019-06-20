@@ -1,78 +1,190 @@
-<!-- <div style="display: block">
-    <canvas baseChart
-            [data]="lineChartData"
-            [labels]="lineChartLabels"
-            [chartType]="lineChartType">
-    </canvas>
+<!--  ************************ Table marché ************************  -->
+<div class="table_container">
+    <div class="table_item">
+        <table mat-table [dataSource]="data_source_marche" class="mat-elevation-z8">
+            
+            <ng-container matColumnDef="id_marche">
+            <th mat-header-cell *matHeaderCellDef> ID. </th>
+            <td mat-cell *matCellDef="let marche"> {{marche.id_marche}} </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="num_marche">
+            <th mat-header-cell *matHeaderCellDef> Num marché </th>
+            <td mat-cell *matCellDef="let marche"> {{marche.num_marche}} </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="intitule">
+            <th mat-header-cell *matHeaderCellDef> Intitulé </th>
+            <td mat-cell *matCellDef="let marche"> {{marche.intitule}} </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="duree_jour">
+            <th mat-header-cell *matHeaderCellDef> Durée en jour </th>
+            <td mat-cell *matCellDef="let marche"> {{marche.duree_jour}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="duree_mois">
+                <th mat-header-cell *matHeaderCellDef> Durée en mois </th>
+                <td mat-cell *matCellDef="let marche"> {{marche.duree_mois}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="montant_marche">
+                <th mat-header-cell *matHeaderCellDef> Montant marché </th>
+                <td mat-cell *matCellDef="let marche"> {{marche.montant_marche}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayed_columns_marche" ></tr>
+            <tr mat-row *matRowDef="let row; columns: displayed_columns_marche;"></tr>
+
+        </table>
+    </div>
+    <div class="table_item">
+        <div *ngIf="progress">
+            <mat-progress-spinner color="accent" mode="indeterminate"> </mat-progress-spinner>
+        </div>
+    </div>
+    <div class="table_item">
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+</div>
+<!--  ************************ FIn table marché ************************  -->
+  
+<!--  ************************ Table sous-rubrique ************************  -->
+<!-- <div class="table_container">
+    <div class="table_item">
+        <table mat-table [dataSource]="data_source_sous_rubrique" class="mat-elevation-z8">
+            
+            <ng-container matColumnDef="id_sous_rubrique">
+            <th mat-header-cell *matHeaderCellDef> ID. </th>
+            <td mat-cell *matCellDef="let sousRubrique"> {{sousRubrique.id_sous_rubrique}} </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="id_marche">
+            <th mat-header-cell *matHeaderCellDef> Référence marché </th>
+            <td mat-cell *matCellDef="let sousRubrique"> {{sousRubrique.id_marche}} </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="id_rubrique">
+            <th mat-header-cell *matHeaderCellDef> Référence rubrique </th>
+            <td mat-cell *matCellDef="let sousRubrique"> {{sousRubrique.id_rubrique}} </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="lib_sous_rubrique">
+            <th mat-header-cell *matHeaderCellDef> Librairie sous rubrique </th>
+            <td mat-cell *matCellDef="let sousRubrique"> {{sousRubrique.lib_sous_rubrique}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="unite">
+            <th mat-header-cell *matHeaderCellDef> Unité </th>
+            <td mat-cell *matCellDef="let sousRubrique"> {{sousRubrique.unite}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="valeur_cible">
+            <th mat-header-cell *matHeaderCellDef> Valeur ciblé </th>
+            <td mat-cell *matCellDef="let sousRubrique"> {{sousRubrique.valeur_cible}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="poids">
+            <th mat-header-cell *matHeaderCellDef> Poids </th>
+            <td mat-cell *matCellDef="let sousRubrique"> {{sousRubrique.poids}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayed_columns_sous_rubrique" ></tr>
+            <tr mat-row *matRowDef="let row; columns: displayed_columns_sous_rubrique;"></tr>
+        </table>
+    </div>
+    <div class="table_item">
+        <div *ngIf="progress">
+            <mat-progress-spinner color="accent" mode="indeterminate"> </mat-progress-spinner>
+        </div>
+    </div>
+    <div class="table_item">
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
 </div> -->
+<div class="table_container">
+        <div class="table_item">
+            <table mat-table [dataSource]="data_source_sous_rubrique_view" class="mat-elevation-z8">
+                
+                <ng-container matColumnDef="id_marche">
+                <th mat-header-cell *matHeaderCellDef> Marché. </th>
+                <td mat-cell *matCellDef="let sousRubriqueView"> {{sousRubriqueView.id_marche}} </td>
+                </ng-container>
+            
+                <ng-container matColumnDef="id_rubrique">
+                <th mat-header-cell *matHeaderCellDef> Rubrique </th>
+                <td mat-cell *matCellDef="let sousRubriqueView"> {{ sousRubriqueView.id_rubrique }} </td>
+                </ng-container>
+            
+                <ng-container matColumnDef="id_sous_rubrique">
+                <th mat-header-cell *matHeaderCellDef> ID sous-rubrique </th>
+                <td mat-cell *matCellDef="let sousRubriqueView"> {{sousRubriqueView.id_sous_rubrique}} </td>
+                </ng-container>
 
+                <ng-container matColumnDef="lib_sous_rubrique">
+                <th mat-header-cell *matHeaderCellDef> Sous-Rubrique </th>
+                <td mat-cell *matCellDef="let sousRubriqueView"> {{sousRubriqueView.lib_sous_rubrique}} </td>
+                </ng-container>
 
-<!-- Constat form -->
-<!-- <form [formGroup]="constatFrom">
+                <ng-container matColumnDef="id_periode">
+                <th mat-header-cell *matHeaderCellDef> Période </th>
+                <td mat-cell *matCellDef="let sousRubriqueView"> {{sousRubriqueView.id_periode}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="poids">
+                <th mat-header-cell *matHeaderCellDef> Poids </th>
+                <td mat-cell *matCellDef="let sousRubriqueView"> {{sousRubriqueView.poids}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="taux_avancement_sous_rubrique">
+                <th mat-header-cell *matHeaderCellDef> Taux avancement sous rubrique </th>
+                <td mat-cell *matCellDef="let sousRubriqueView"> {{sousRubriqueView.taux_avancement_sous_rubrique}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayed_columns_sous_rubrique_avancement" ></tr>
+                <tr mat-row *matRowDef="let row; columns: displayed_columns_sous_rubrique_avancement;"></tr>
+            </table>
+        </div>
+        <div class="table_item">
+            <div *ngIf="progress">
+                <mat-progress-spinner color="accent" mode="indeterminate"> </mat-progress-spinner>
+            </div>
+        </div>
+        <div class="table_item">
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+        </div>
+    </div>
+<!--  ************************ Table sous-rubrique ************************  -->
+
+<!-- Taux d'avancement d'une sous-rubrique -->
+<form [formGroup]="sousRubriqueForm">
     <div class="container">
+        <div class="item">
+            Seléctionner une sous-rubrique :
+        </div>
         <div class="item">
             <div class="form-group">
                 <mat-form-field>
-                    <mat-select class="form-control" placeholder="Sous-rubrique" name="id_sous_rubrique" formControlName="id_sous_rubrique">
-                        <mat-option *ngFor="let constat of constatsList" [value]="constat.id_marche"> {{constat.id_marche}} </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div> 
-        </div>
-    </div>
-    <div class="container">
-        <div class="item">
-            <div class="form-group">
-                <button type="submit" mat-raised-button color="accent" (click)="afficherDiargamme()"> Afficher le diagramme </button>            
-            </div>
-        </div>
-    </div>
-</form> -->
-
-<!-- Marché form -->
-<!-- <form [formGroup]="marcheForm">
-    <div class="container">
-        <div class="item">
-            <div class="form-group">
-                <mat-form-field>
-                    <mat-select class="form-control" placeholder="Projets" name="num_marche" formControlName="num_marche">
-                        <mat-option *ngFor="let marche of marchesList" [value]="marche.num_marche"> {{marche.intitule}} </mat-option>
+                    <mat-select class="form-control" placeholder="Veuillez seléctionner une rubrique" name="id_sous_rubrique" formControlName="id_sous_rubrique">
+                        <mat-option *ngFor="let sous_rubrique of liste_des_sous_rubriques" [value]="sous_rubrique.id_sous_rubrique"> {{sous_rubrique.lib_sous_rubrique}} </mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
         </div>
-    </div>
-    <div class="container">
         <div class="item">
             <div class="form-group">
-                <button type="submit" mat-raised-button color="accent" (click)="diagrammeProjet()"> Diagramme de projet </button>            
+                <button type="submit" mat-raised-button color="accent" (click)="calculeTauxAvancement()"> Taux d'avancement </button>            
             </div>
         </div>
     </div>
-</form> -->
+    <div class="container">
+        <div class="item" *ngIf="isLoading">
+            Le Taux d'avancement est : {{ taux_avancement | number : '2.1' }} % <br>
+        </div>
+    </div>
+</form>
 
-
-<!-- Rubrique form -->
-<!-- <form [formGroup]="rubriqueForm">
-    <div class="container">
-        <div class="item">
-            <div class="form-group">
-                <mat-form-field>
-                    <mat-select class="form-control" placeholder="Rubriques" name="id" formControlName="id">
-                        <mat-option *ngFor="let rubrique of rubriquesList" [value]="rubrique.id"> {{rubrique.lib_rubrique}} </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="item">
-            <div class="form-group">
-                <button type="submit" mat-raised-button color="accent" (click)="diagrammeRubrique()"> Diagramme de rubrique </button>            
-            </div>
-        </div>
-    </div>
-</form> -->
+<hr>
 
 <!-- Marché form -->
 <form [formGroup]="marcheForm">
@@ -91,7 +203,7 @@
         </div>
         <div class="item">
             <div class="form-group">
-                <button type="submit" mat-raised-button color="accent" (click)="diagrammeMarche()"> Diagramme de marché </button>            
+                <button type="submit" mat-raised-button color="accent" (click)="afficherDiagrammeMarche()"> Diagramme de marché </button>            
             </div>
         </div>
     </div>
@@ -115,7 +227,7 @@
         </div>
         <div class="item">
             <div class="form-group">
-                <button type="submit" mat-raised-button color="accent" (click)="diagrammeRubrique()"> Diagramme de rubrique </button>            
+                <button type="submit" mat-raised-button color="accent" (click)="afficherDiagrammeRubrique()"> Diagramme de rubrique </button>            
             </div>
         </div>
     </div>
@@ -145,7 +257,7 @@
         </div>
         <div class="item">
             <div class="form-group">
-                <button type="submit" mat-raised-button color="accent" (click)="diagrammeSousRubrique()"> Diagramme de sous-rubrique </button>            
+                <button type="submit" mat-raised-button color="accent" (click)="afficherDiagrammeSousRubrique()"> Diagramme de sous-rubrique </button>            
             </div>
         </div>
     </div>

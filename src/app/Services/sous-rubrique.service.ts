@@ -14,7 +14,7 @@ export class SousRubriqueService {
   { }
 
   // Récupération de la liste des sous-rubriques
-  sousRubriqueList() : Observable<any>
+  sousRubriqueList() : Observable<SousRubriques[]>
   {
     return this.http.get<SousRubriques[]>('http://localhost:8000/api/sousRubrique')
     .map(

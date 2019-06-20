@@ -13,7 +13,7 @@ export class MarcheService {
   { }
 
   // Foncion de récupération de la liste des constats
-  marcheList() : Observable<any>
+  marcheList() : Observable<Marches[]>
   {
     return this.http.get<Marches[]>('http://localhost:8000/api/marche')
     .map(
