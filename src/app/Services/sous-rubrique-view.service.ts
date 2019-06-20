@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/Rx';
-import { SousRubriqueView } from 'app/Model/sousRubriqueView';
+import { SousRubriqueView } from 'app/Model/SousRubriqueView';
 
 @Injectable({
   providedIn: 'root'

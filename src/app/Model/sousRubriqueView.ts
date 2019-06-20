@@ -1,10 +1,8 @@
 export class SousRubriqueView
 {
-    id_marche : number;
-    id_rubrique : number;
-    id_sous_rubrique : number;
-    lib_sous_rubrique : string;
-    id_periode : number;
-    poids : number;
+    marche : string;
+    rubrique : string;
+    sous_rubrique : string;
+    periode : string;
     taux_avancement_sous_rubrique : number;
 }

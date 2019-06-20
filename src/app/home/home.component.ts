@@ -15,7 +15,9 @@ import { Rubriques } from 'app/Model/Rubriques';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { SousRubriqueViewService } from 'app/Services/sous-rubrique-view.service';
-import { SousRubriqueView } from 'app/Model/sousRubriqueView';
+import { SousRubriqueView } from 'app/Model/SousRubriqueView';
+import { RubriqueViewService } from 'app/Services/rubrique-view.service';
+import { RubriqueView } from 'app/Model/RubriqueView';
 
 @Component({
   selector: 'app-home',
@@ -31,11 +33,15 @@ export class HomeComponent implements OnInit {
   marche_data_table : Marches[] = [];
   data_source_marche = new MatTableDataSource<Marches>(this.marche_data_table);
 
-  // DataSource & DisplayedColumns pour la table SOUS-RUBRIQUE
-  displayed_columns_sous_rubrique_avancement: string[] = ['id_marche', 'id_rubrique', 'id_sous_rubrique', 'lib_sous_rubrique', 'id_periode', 'poids', 'taux_avancement_sous_rubrique'];
-  // // displayed_columns_sous_rubrique: string[] = ['id_sous_rubrique', 'taux_avancement', 'avancement', 'lib_sous_rubrique', 'unite', 'valeur_cible', 'poids'];
+  // DataSource & DisplayedColumns pour la table SOUS-RUBRIQUE VIEW
+  displayed_columns_sous_rubrique_avancement: string[] = ['marche', 'rubrique', 'sous_rubrique', 'periode', 'taux_avancement_sous_rubrique'];
   sous_rubrique_avancement_data_table : SousRubriqueView[] = [];
   data_source_sous_rubrique_view = new MatTableDataSource<SousRubriqueView>(this.sous_rubrique_avancement_data_table);
+
+  // DataSource & DisplayedColumns pour la table RUBRIQUE VIEW
+  displayed_columns_rubrique_avancement : string[] = ['marche', 'rubrique', 'periode', 'taux_avancement_rubrique'];
+  rubrique_avancement_data_table : RubriqueView[] = [];
+  data_source_rubrique_view = new MatTableDataSource<RubriqueView>(this.rubrique_avancement_data_table);
 
   // Afficher le progress spinner
   progress = true;
@@ -45,6 +51,10 @@ export class HomeComponent implements OnInit {
 
   // La pagination de la table sous-rubrique
   @ViewChild(MatPaginator) paginator_sous_rubrique_view : MatPaginator;
+
+  // La pagination de la table rubrique
+  @ViewChild(MatPaginator) paginator_rubrique_view : MatPaginator;
+
 
   /* -------------------------------------- Fin tables -------------------------------------- */
 
@@ -135,7 +145,7 @@ export class HomeComponent implements OnInit {
 
   // Liste des sous-rubrique pour le taux d'avancement
   // liste_des_sous_rubriques_avancement : [];
-  liste_des_sous_rubriques_avancement : SousRubriqueView[];
+  avancement_des_sous_rubriques : SousRubriqueView[];
 
   liste_des_sous_rubriques : SousRubriques[];
 
@@ -149,7 +159,7 @@ export class HomeComponent implements OnInit {
   isLoading = false;
 
   /* --------------------------------- Variables de taux d'avancement --------------------------------- */
-  constructor(private sousRubriqueViewService : SousRubriqueViewService, private rubriqueService : RubriqueService, private constatService : ConstatService, private periodService : PeriodeService, private sousRubriqueService : SousRubriqueService, private marcheService : MarcheService, private formBuilder : FormBuilder, private http : HttpClient, private changeDetectorRef : ChangeDetectorRef) 
+  constructor(private rubriqueViewService : RubriqueViewService, private sousRubriqueViewService : SousRubriqueViewService, private rubriqueService : RubriqueService, private constatService : ConstatService, private periodService : PeriodeService, private sousRubriqueService : SousRubriqueService, private marcheService : MarcheService, private formBuilder : FormBuilder, private http : HttpClient, private changeDetectorRef : ChangeDetectorRef) 
   { 
     this.data_source_marche = new MatTableDataSource<Marches>(this.marche_data_table)
     this.data_source_sous_rubrique_view = new MatTableDataSource<SousRubriqueView>(this.sous_rubrique_avancement_data_table)
@@ -159,23 +169,29 @@ export class HomeComponent implements OnInit {
   ngOnInit()
   {
     // Avoir la liste des constats, afin de calculer le taux d'avencement sur le DataTable sous-rubrique
-    this.constatService.constatList()
-    .subscribe(
-      (response : Constats[]) => 
-      {
-        this.constatsList = response;
-      }
-    );
+    // this.constatService.constatList()
+    // .subscribe(
+    //   (response : Constats[]) => 
+    //   {
+    //     this.constatsList = response;
+    //   }
+    // );
 
 
     // Le dataTable marché
-    this.afficherDataTableMarches();
+    // this.afficherDataTableMarches();
 
     // Le dataTable sous-rubrique-view
     this.afficherDataTableSousRubriqueView();
 
+    // Le dataTable sous-rubrique-view
+    this.afficherDataTableRubriqueView();
+
     // La pagination de la table marché
     this.data_source_marche.paginator = this.paginator_marche;
+
+    // La pagination de la table marché
+    this.data_source_rubrique_view.paginator = this.paginator_rubrique_view;
 
     // La pagination de la table sous-rubrique
     this.data_source_sous_rubrique_view.paginator = this.paginator_sous_rubrique_view; 
@@ -194,7 +210,7 @@ export class HomeComponent implements OnInit {
     .subscribe(
       response => 
       {
-        this.liste_des_sous_rubriques_avancement = response;
+        this.avancement_des_sous_rubriques = response;
       }
     )
 
@@ -262,7 +278,7 @@ export class HomeComponent implements OnInit {
     )
   }
 
-  // fonction qui remplie la table sous-rubrique
+  // fonction qui remplie la table sous-rubrique-view
   afficherDataTableSousRubriqueView()
   {
     this.sousRubriqueViewService.sousRubriqueViewList()
@@ -272,6 +288,19 @@ export class HomeComponent implements OnInit {
         this.progress = false;
         this.data_source_sous_rubrique_view.data = response;
       } 
+    )
+  }
+
+  // fonction qui remplie la table rubrique-view
+  afficherDataTableRubriqueView()
+  {
+    this.rubriqueViewService.rubriqueViewList()
+    .subscribe(
+      response =>
+      {
+        this.progress = false;
+        this.data_source_rubrique_view.data = response;
+      }
     )
   }
 

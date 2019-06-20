@@ -1,5 +1,5 @@
 <!--  ************************ Table marché ************************  -->
-<div class="table_container">
+<!-- <div class="table_container">
     <div class="table_item">
         <table mat-table [dataSource]="data_source_marche" class="mat-elevation-z8">
             
@@ -46,94 +46,32 @@
     <div class="table_item">
         <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
     </div>
-</div>
+</div> -->
 <!--  ************************ FIn table marché ************************  -->
   
-<!--  ************************ Table sous-rubrique ************************  -->
-<!-- <div class="table_container">
-    <div class="table_item">
-        <table mat-table [dataSource]="data_source_sous_rubrique" class="mat-elevation-z8">
-            
-            <ng-container matColumnDef="id_sous_rubrique">
-            <th mat-header-cell *matHeaderCellDef> ID. </th>
-            <td mat-cell *matCellDef="let sousRubrique"> {{sousRubrique.id_sous_rubrique}} </td>
-            </ng-container>
-        
-            <ng-container matColumnDef="id_marche">
-            <th mat-header-cell *matHeaderCellDef> Référence marché </th>
-            <td mat-cell *matCellDef="let sousRubrique"> {{sousRubrique.id_marche}} </td>
-            </ng-container>
-        
-            <ng-container matColumnDef="id_rubrique">
-            <th mat-header-cell *matHeaderCellDef> Référence rubrique </th>
-            <td mat-cell *matCellDef="let sousRubrique"> {{sousRubrique.id_rubrique}} </td>
-            </ng-container>
-        
-            <ng-container matColumnDef="lib_sous_rubrique">
-            <th mat-header-cell *matHeaderCellDef> Librairie sous rubrique </th>
-            <td mat-cell *matCellDef="let sousRubrique"> {{sousRubrique.lib_sous_rubrique}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="unite">
-            <th mat-header-cell *matHeaderCellDef> Unité </th>
-            <td mat-cell *matCellDef="let sousRubrique"> {{sousRubrique.unite}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="valeur_cible">
-            <th mat-header-cell *matHeaderCellDef> Valeur ciblé </th>
-            <td mat-cell *matCellDef="let sousRubrique"> {{sousRubrique.valeur_cible}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="poids">
-            <th mat-header-cell *matHeaderCellDef> Poids </th>
-            <td mat-cell *matCellDef="let sousRubrique"> {{sousRubrique.poids}} </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayed_columns_sous_rubrique" ></tr>
-            <tr mat-row *matRowDef="let row; columns: displayed_columns_sous_rubrique;"></tr>
-        </table>
-    </div>
-    <div class="table_item">
-        <div *ngIf="progress">
-            <mat-progress-spinner color="accent" mode="indeterminate"> </mat-progress-spinner>
-        </div>
-    </div>
-    <div class="table_item">
-        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-    </div>
-</div> -->
+<!--  ************************ Table sous-rubrique & taux d'avencement ************************  -->
 <div class="table_container">
         <div class="table_item">
             <table mat-table [dataSource]="data_source_sous_rubrique_view" class="mat-elevation-z8">
                 
-                <ng-container matColumnDef="id_marche">
+                <ng-container matColumnDef="marche">
                 <th mat-header-cell *matHeaderCellDef> Marché. </th>
-                <td mat-cell *matCellDef="let sousRubriqueView"> {{sousRubriqueView.id_marche}} </td>
+                <td mat-cell *matCellDef="let sousRubriqueView"> {{sousRubriqueView.marche}} </td>
                 </ng-container>
             
-                <ng-container matColumnDef="id_rubrique">
+                <ng-container matColumnDef="rubrique">
                 <th mat-header-cell *matHeaderCellDef> Rubrique </th>
-                <td mat-cell *matCellDef="let sousRubriqueView"> {{ sousRubriqueView.id_rubrique }} </td>
+                <td mat-cell *matCellDef="let sousRubriqueView"> {{ sousRubriqueView.rubrique }} </td>
                 </ng-container>
             
-                <ng-container matColumnDef="id_sous_rubrique">
-                <th mat-header-cell *matHeaderCellDef> ID sous-rubrique </th>
-                <td mat-cell *matCellDef="let sousRubriqueView"> {{sousRubriqueView.id_sous_rubrique}} </td>
+                <ng-container matColumnDef="sous_rubrique">
+                <th mat-header-cell *matHeaderCellDef> Sous-rubrique </th>
+                <td mat-cell *matCellDef="let sousRubriqueView"> {{sousRubriqueView.sous_rubrique}} </td>
                 </ng-container>
 
-                <ng-container matColumnDef="lib_sous_rubrique">
-                <th mat-header-cell *matHeaderCellDef> Sous-Rubrique </th>
-                <td mat-cell *matCellDef="let sousRubriqueView"> {{sousRubriqueView.lib_sous_rubrique}} </td>
-                </ng-container>
-
-                <ng-container matColumnDef="id_periode">
+                <ng-container matColumnDef="periode">
                 <th mat-header-cell *matHeaderCellDef> Période </th>
-                <td mat-cell *matCellDef="let sousRubriqueView"> {{sousRubriqueView.id_periode}} </td>
-                </ng-container>
-
-                <ng-container matColumnDef="poids">
-                <th mat-header-cell *matHeaderCellDef> Poids </th>
-                <td mat-cell *matCellDef="let sousRubriqueView"> {{sousRubriqueView.poids}} </td>
+                <td mat-cell *matCellDef="let sousRubriqueView"> {{sousRubriqueView.periode}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="taux_avancement_sous_rubrique">
@@ -154,7 +92,51 @@
             <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
         </div>
     </div>
-<!--  ************************ Table sous-rubrique ************************  -->
+<!--  ************************ Table sous-rubrique & taux d'avencement ************************  -->
+
+<hr>
+
+<!--  ************************ Table rubrique & taux d'avencement ************************  -->
+<div class="table_container">
+    <div class="table_item">
+        <table mat-table [dataSource]="data_source_rubrique_view" class="mat-elevation-z8">
+            
+            <ng-container matColumnDef="marche">
+            <th mat-header-cell *matHeaderCellDef> Marché. </th>
+            <td mat-cell *matCellDef="let rubriqueView"> {{rubriqueView.marche}} </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="rubrique">
+            <th mat-header-cell *matHeaderCellDef> Rubrique </th>
+            <td mat-cell *matCellDef="let rubriqueView"> {{ rubriqueView.rubrique }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="periode">
+            <th mat-header-cell *matHeaderCellDef> Période </th>
+            <td mat-cell *matCellDef="let rubriqueView"> {{rubriqueView.periode}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="taux_avancement_rubrique">
+            <th mat-header-cell *matHeaderCellDef> Taux avancement rubrique </th>
+            <td mat-cell *matCellDef="let rubriqueView"> {{rubriqueView.taux_avancement_rubrique}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayed_columns_rubrique_avancement" ></tr>
+            <tr mat-row *matRowDef="let row; columns: displayed_columns_rubrique_avancement;"></tr>
+        </table>
+    </div>
+    <div class="table_item">
+        <div *ngIf="progress">
+            <mat-progress-spinner color="accent" mode="indeterminate"> </mat-progress-spinner>
+        </div>
+    </div>
+    <div class="table_item">
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+</div>
+<!--  ************************ Table rubrique & taux d'avencement ************************  -->
+
+<hr>
 
 <!-- Taux d'avancement d'une sous-rubrique -->
 <form [formGroup]="sousRubriqueForm">
