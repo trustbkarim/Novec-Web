@@ -18,6 +18,8 @@ import { SousRubriqueViewService } from 'app/Services/sous-rubrique-view.service
 import { SousRubriqueView } from 'app/Model/SousRubriqueView';
 import { RubriqueViewService } from 'app/Services/rubrique-view.service';
 import { RubriqueView } from 'app/Model/RubriqueView';
+import { MarcheView } from 'app/Model/MarcheView';
+import { MarcheViewService } from 'app/Services/marche-view.service';
 
 @Component({
   selector: 'app-home',
@@ -43,17 +45,25 @@ export class HomeComponent implements OnInit {
   rubrique_avancement_data_table : RubriqueView[] = [];
   data_source_rubrique_view = new MatTableDataSource<RubriqueView>(this.rubrique_avancement_data_table);
 
+  // DataSource & DisplayedColumns pour la table MARCHE VIEW
+  displayed_columns_marche_avancement : string[] = ['marche', 'periode', 'taux_avancement_marche'];
+  marche_avancement_data_table : MarcheView[] = [];
+  data_source_marche_view = new MatTableDataSource<MarcheView>(this.marche_avancement_data_table);
+
   // Afficher le progress spinner
   progress = true;
 
   // La pagination de la table marché
   @ViewChild(MatPaginator) paginator_marche : MatPaginator;
 
-  // La pagination de la table sous-rubrique
+  // La pagination de la table sous-rubrique view 
   @ViewChild(MatPaginator) paginator_sous_rubrique_view : MatPaginator;
 
-  // La pagination de la table rubrique
+  // La pagination de la table rubrique view
   @ViewChild(MatPaginator) paginator_rubrique_view : MatPaginator;
+
+  // La pagination de la table marche view
+  @ViewChild(MatPaginator) paginator_marche_view : MatPaginator;
 
 
   /* -------------------------------------- Fin tables -------------------------------------- */
@@ -159,10 +169,10 @@ export class HomeComponent implements OnInit {
   isLoading = false;
 
   /* --------------------------------- Variables de taux d'avancement --------------------------------- */
-  constructor(private rubriqueViewService : RubriqueViewService, private sousRubriqueViewService : SousRubriqueViewService, private rubriqueService : RubriqueService, private constatService : ConstatService, private periodService : PeriodeService, private sousRubriqueService : SousRubriqueService, private marcheService : MarcheService, private formBuilder : FormBuilder, private http : HttpClient, private changeDetectorRef : ChangeDetectorRef) 
+  constructor(private marcheViewService : MarcheViewService, private rubriqueViewService : RubriqueViewService, private sousRubriqueViewService : SousRubriqueViewService, private rubriqueService : RubriqueService, private constatService : ConstatService, private periodService : PeriodeService, private sousRubriqueService : SousRubriqueService, private marcheService : MarcheService, private formBuilder : FormBuilder, private http : HttpClient, private changeDetectorRef : ChangeDetectorRef) 
   { 
-    this.data_source_marche = new MatTableDataSource<Marches>(this.marche_data_table)
-    this.data_source_sous_rubrique_view = new MatTableDataSource<SousRubriqueView>(this.sous_rubrique_avancement_data_table)
+    // this.data_source_marche = new MatTableDataSource<Marches>(this.marche_data_table)
+    // this.data_source_sous_rubrique_view = new MatTableDataSource<SousRubriqueView>(this.sous_rubrique_avancement_data_table)
   }
 
 
@@ -181,6 +191,9 @@ export class HomeComponent implements OnInit {
     // Le dataTable marché
     // this.afficherDataTableMarches();
 
+    // Le dataTable marche view
+    this.afficherDataTableMarcheView();
+
     // Le dataTable sous-rubrique-view
     this.afficherDataTableSousRubriqueView();
 
@@ -188,7 +201,7 @@ export class HomeComponent implements OnInit {
     this.afficherDataTableRubriqueView();
 
     // La pagination de la table marché
-    this.data_source_marche.paginator = this.paginator_marche;
+    this.data_source_marche_view.paginator = this.paginator_marche_view;
 
     // La pagination de la table marché
     this.data_source_rubrique_view.paginator = this.paginator_rubrique_view;
@@ -266,14 +279,27 @@ export class HomeComponent implements OnInit {
 
   /* --------------------------------- Fonctions de remplissage des tables --------------------------------- */
   // fonction qui remplie la table des marchés
-  afficherDataTableMarches()
+  // afficherDataTableMarches()
+  // {
+  //   this.marcheService.marcheList()
+  //   .subscribe(
+  //     (response : Marches[]) => 
+  //     {
+  //       this.progress = false;
+  //       this.data_source_marche.data = response;        
+  //     }
+  //   )
+  // }
+
+  // fonction qui remplie la table des marché view
+  afficherDataTableMarcheView()
   {
-    this.marcheService.marcheList()
+    this.marcheViewService.marcheViewList()
     .subscribe(
-      (response : Marches[]) => 
+      (response : MarcheView[]) =>
       {
         this.progress = false;
-        this.data_source_marche.data = response;        
+        this.data_source_marche_view.data = response;
       }
     )
   }
@@ -525,6 +551,15 @@ export class HomeComponent implements OnInit {
 
     this.periode_diagramme = [];
     this.suivi_avancement_constat_sur_valeur_cible = [];
+  }
+
+  // Filtere dataTable
+  applyFilter(filterValue: string) {
+    this.data_source_marche_view.filter = filterValue.trim().toLowerCase();
+
+    if (this.data_source_marche_view.paginator) {
+      this.data_source_marche_view.paginator.firstPage();
+    }
   }
 
 }

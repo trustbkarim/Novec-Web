@@ -48,9 +48,102 @@
     </div>
 </div> -->
 <!--  ************************ FIn table marché ************************  -->
-  
+
+<!--  ************************ Table Marche & taux d'avencement ************************  -->
+<div class="table_container">
+    <div class="table_item">
+        <h3> Taux d'avancement du marché ! </h3>
+    </div>
+    <div class="table_item">
+        <mat-form-field class="filter">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Que chercher vous ?">
+        </mat-form-field>
+    </div>
+    <div class="table_item">
+        <table mat-table [dataSource]="data_source_marche_view" class="mat-elevation-z8">
+            
+            <ng-container matColumnDef="marche">
+            <th mat-header-cell *matHeaderCellDef> Marché. </th>
+            <td mat-cell *matCellDef="let marcheView"> {{marcheView.marche}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="periode">
+            <th mat-header-cell *matHeaderCellDef> Période </th>
+            <td mat-cell *matCellDef="let marcheView"> {{marcheView.periode}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="taux_avancement_marche">
+            <th mat-header-cell *matHeaderCellDef> Taux avancement marché </th>
+            <td mat-cell *matCellDef="let marcheView"> {{marcheView.taux_avancement_marche}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayed_columns_marche_avancement" ></tr>
+            <tr mat-row *matRowDef="let row; columns: displayed_columns_marche_avancement;"></tr>
+        </table>
+    </div>
+    <div class="table_item">
+        <div *ngIf="progress">
+            <mat-progress-spinner color="accent" mode="indeterminate"> </mat-progress-spinner>
+        </div>
+    </div>
+    <div class="table_item">
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+</div>
+<!--  ************************ Table Marche & taux d'avencement ************************  -->
+
+<hr>
+
+<!--  ************************ Table rubrique & taux d'avencement ************************  -->
+<div class="table_container">
+    <div class="table_item">
+        <h3> Taux d'avancement de la rubrique ! </h3>
+    </div>
+    <div class="table_item">
+        <table mat-table [dataSource]="data_source_rubrique_view" class="mat-elevation-z8">
+            
+            <ng-container matColumnDef="marche">
+            <th mat-header-cell *matHeaderCellDef> Marché. </th>
+            <td mat-cell *matCellDef="let rubriqueView"> {{rubriqueView.marche}} </td>
+            </ng-container>
+        
+            <ng-container matColumnDef="rubrique">
+            <th mat-header-cell *matHeaderCellDef> Rubrique </th>
+            <td mat-cell *matCellDef="let rubriqueView"> {{ rubriqueView.rubrique }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="periode">
+            <th mat-header-cell *matHeaderCellDef> Période </th>
+            <td mat-cell *matCellDef="let rubriqueView"> {{rubriqueView.periode}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="taux_avancement_rubrique">
+            <th mat-header-cell *matHeaderCellDef> Taux avancement rubrique </th>
+            <td mat-cell *matCellDef="let rubriqueView"> {{rubriqueView.taux_avancement_rubrique}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayed_columns_rubrique_avancement" ></tr>
+            <tr mat-row *matRowDef="let row; columns: displayed_columns_rubrique_avancement;"></tr>
+        </table>
+    </div>
+    <div class="table_item">
+        <div *ngIf="progress">
+            <mat-progress-spinner color="accent" mode="indeterminate"> </mat-progress-spinner>
+        </div>
+    </div>
+    <!-- <div class="table_item">
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div> -->
+</div>
+<!--  ************************ Table rubrique & taux d'avencement ************************  -->
+
+<hr>
+
 <!--  ************************ Table sous-rubrique & taux d'avencement ************************  -->
 <div class="table_container">
+        <div class="table_item">
+            <h3> Taux d'avancement de la sous-rubrique ! </h3>
+        </div>
         <div class="table_item">
             <table mat-table [dataSource]="data_source_sous_rubrique_view" class="mat-elevation-z8">
                 
@@ -88,53 +181,11 @@
                 <mat-progress-spinner color="accent" mode="indeterminate"> </mat-progress-spinner>
             </div>
         </div>
-        <div class="table_item">
+        <!-- <div class="table_item">
             <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-        </div>
+        </div> -->
     </div>
 <!--  ************************ Table sous-rubrique & taux d'avencement ************************  -->
-
-<hr>
-
-<!--  ************************ Table rubrique & taux d'avencement ************************  -->
-<div class="table_container">
-    <div class="table_item">
-        <table mat-table [dataSource]="data_source_rubrique_view" class="mat-elevation-z8">
-            
-            <ng-container matColumnDef="marche">
-            <th mat-header-cell *matHeaderCellDef> Marché. </th>
-            <td mat-cell *matCellDef="let rubriqueView"> {{rubriqueView.marche}} </td>
-            </ng-container>
-        
-            <ng-container matColumnDef="rubrique">
-            <th mat-header-cell *matHeaderCellDef> Rubrique </th>
-            <td mat-cell *matCellDef="let rubriqueView"> {{ rubriqueView.rubrique }} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="periode">
-            <th mat-header-cell *matHeaderCellDef> Période </th>
-            <td mat-cell *matCellDef="let rubriqueView"> {{rubriqueView.periode}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="taux_avancement_rubrique">
-            <th mat-header-cell *matHeaderCellDef> Taux avancement rubrique </th>
-            <td mat-cell *matCellDef="let rubriqueView"> {{rubriqueView.taux_avancement_rubrique}} </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayed_columns_rubrique_avancement" ></tr>
-            <tr mat-row *matRowDef="let row; columns: displayed_columns_rubrique_avancement;"></tr>
-        </table>
-    </div>
-    <div class="table_item">
-        <div *ngIf="progress">
-            <mat-progress-spinner color="accent" mode="indeterminate"> </mat-progress-spinner>
-        </div>
-    </div>
-    <div class="table_item">
-        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-    </div>
-</div>
-<!--  ************************ Table rubrique & taux d'avencement ************************  -->
 
 <hr>
 
