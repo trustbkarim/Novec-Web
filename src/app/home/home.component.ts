@@ -20,6 +20,7 @@ import { RubriqueViewService } from 'app/Services/rubrique-view.service';
 import { RubriqueView } from 'app/Model/RubriqueView';
 import { MarcheView } from 'app/Model/MarcheView';
 import { MarcheViewService } from 'app/Services/marche-view.service';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-home',
@@ -62,8 +63,9 @@ export class HomeComponent implements OnInit {
   // La pagination de la table rubrique view
   @ViewChild(MatPaginator) paginator_rubrique_view : MatPaginator;
 
-  // La pagination de la table marche view
+  // La pagination & Trie de la table marche view
   @ViewChild(MatPaginator) paginator_marche_view : MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
 
   /* -------------------------------------- Fin tables -------------------------------------- */
@@ -202,8 +204,9 @@ export class HomeComponent implements OnInit {
 
     // La pagination de la table marché
     this.data_source_marche_view.paginator = this.paginator_marche_view;
+    this.data_source_marche_view.sort = this.sort;
 
-    // La pagination de la table marché
+    // La pagination de la table rubrique
     this.data_source_rubrique_view.paginator = this.paginator_rubrique_view;
 
     // La pagination de la table sous-rubrique
@@ -553,7 +556,7 @@ export class HomeComponent implements OnInit {
     this.suivi_avancement_constat_sur_valeur_cible = [];
   }
 
-  // Filtere dataTable
+  // Filter du dataTable marcheView
   applyFilter(filterValue: string) {
     this.data_source_marche_view.filter = filterValue.trim().toLowerCase();
 
