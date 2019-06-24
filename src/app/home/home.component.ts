@@ -37,17 +37,17 @@ export class HomeComponent implements OnInit {
   data_source_marche = new MatTableDataSource<Marches>(this.marche_data_table);
 
   // DataSource & DisplayedColumns pour la table SOUS-RUBRIQUE VIEW
-  displayed_columns_sous_rubrique_avancement: string[] = ['marche', 'rubrique', 'sous_rubrique', 'periode', 'taux_avancement_sous_rubrique'];
+  displayed_columns_sous_rubrique_avancement: string[] = ['marche', 'rubrique', 'sous_rubrique', 'periode', 'taux_avancement_sous_rubrique', 'progress_bar'];
   sous_rubrique_avancement_data_table : SousRubriqueView[] = [];
   data_source_sous_rubrique_view = new MatTableDataSource<SousRubriqueView>(this.sous_rubrique_avancement_data_table);
 
   // DataSource & DisplayedColumns pour la table RUBRIQUE VIEW
-  displayed_columns_rubrique_avancement : string[] = ['marche', 'rubrique', 'periode', 'taux_avancement_rubrique'];
+  displayed_columns_rubrique_avancement : string[] = ['marche', 'rubrique', 'periode', 'taux_avancement_rubrique', 'progress_bar'];
   rubrique_avancement_data_table : RubriqueView[] = [];
   data_source_rubrique_view = new MatTableDataSource<RubriqueView>(this.rubrique_avancement_data_table);
 
   // DataSource & DisplayedColumns pour la table MARCHE VIEW
-  displayed_columns_marche_avancement : string[] = ['marche', 'periode', 'taux_avancement_marche'];
+  displayed_columns_marche_avancement : string[] = ['marche', 'periode', 'taux_avancement_marche', 'progress_bar'];
   marche_avancement_data_table : MarcheView[] = [];
   data_source_marche_view = new MatTableDataSource<MarcheView>(this.marche_avancement_data_table);
 
@@ -59,13 +59,15 @@ export class HomeComponent implements OnInit {
 
   // La pagination de la table sous-rubrique view 
   @ViewChild(MatPaginator) paginator_sous_rubrique_view : MatPaginator;
+  @ViewChild(MatSort) sort_sous_rubrique_view: MatSort;
 
   // La pagination de la table rubrique view
-  @ViewChild(MatPaginator) paginator_rubrique_view : MatPaginator;
+  @ViewChild('paginator_rubrique_view') paginator_rubrique_view : MatPaginator;
+  @ViewChild(MatSort) sort_rubrique_view: MatSort;
 
   // La pagination & Trie de la table marche view
   @ViewChild(MatPaginator) paginator_marche_view : MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort) sort_marche_view: MatSort;
 
 
   /* -------------------------------------- Fin tables -------------------------------------- */
@@ -204,13 +206,15 @@ export class HomeComponent implements OnInit {
 
     // La pagination de la table marché
     this.data_source_marche_view.paginator = this.paginator_marche_view;
-    this.data_source_marche_view.sort = this.sort;
+    this.data_source_marche_view.sort = this.sort_marche_view;
 
     // La pagination de la table rubrique
     this.data_source_rubrique_view.paginator = this.paginator_rubrique_view;
+    this.data_source_rubrique_view.sort = this.sort_rubrique_view;
 
     // La pagination de la table sous-rubrique
     this.data_source_sous_rubrique_view.paginator = this.paginator_sous_rubrique_view; 
+    this.data_source_sous_rubrique_view.sort = this.sort_sous_rubrique_view;
 
 
 

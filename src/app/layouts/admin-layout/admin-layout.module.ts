@@ -34,7 +34,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatTabsModule } from '@angular/material/tabs';
 
 
 
@@ -60,6 +61,10 @@ import { MatSortModule } from '@angular/material/sort';
     MatProgressSpinnerModule,
     MatPaginatorModule,
     MatSortModule,
+    MatProgressBarModule,
+    MatTabsModule,
+    
+    
 
     // Chart module 
     ChartsModule,
