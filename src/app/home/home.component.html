@@ -61,11 +61,11 @@
             </div>
             <div class="table_item">
                 <mat-form-field class="filter">
-                    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Que recherchez-vous ?">
+                    <input matInput (keyup)="filtrerMarcheView($event.target.value)" placeholder="Que recherchez-vous ?">
                 </mat-form-field>
             </div>
             <div class="table_item">
-                <table mat-table [dataSource]="data_source_marche_view" matSort class="mat-elevation-z8">
+                <table mat-table [dataSource]="data_source_marche_view" #sort_marche_view="matSort" matSort>
                     
                     <ng-container matColumnDef="marche">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Marché. </th>
@@ -101,7 +101,7 @@
                 </div>
             </div>
             <div class="table_item">
-                <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                <mat-paginator #paginator_marche_view [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
             </div>
         </div>
     </mat-tab>
@@ -116,7 +116,12 @@
                 <h3> Taux d'avancement de la rubrique ! </h3>
             </div>
             <div class="table_item">
-                <table mat-table [dataSource]="data_source_rubrique_view" matSort class="mat-elevation-z8">
+                <mat-form-field class="filter">
+                    <input matInput (keyup)="filtrerRubriqueView($event.target.value)" placeholder="Que recherchez-vous ?">
+                </mat-form-field>
+            </div>
+            <div class="table_item">
+                <table mat-table [dataSource]="data_source_rubrique_view" #sort_rubrique_view="matSort" matSort>
                     
                     <ng-container matColumnDef="marche">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Marché. </th>
@@ -157,7 +162,7 @@
                 </div>
             </div>
             <div class="table_item">
-                <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                <mat-paginator #paginator_rubrique_view [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
             </div>
         </div>
     </mat-tab>
@@ -172,35 +177,40 @@
                 <h3> Taux d'avancement de la sous-rubrique ! </h3>
             </div>
             <div class="table_item">
-                <table mat-table [dataSource]="data_source_sous_rubrique_view" class="mat-elevation-z8">
+                <mat-form-field class="filter">
+                    <input matInput (keyup)="filtrerSousRubriqueView($event.target.value)" placeholder="Que recherchez-vous ?">
+                </mat-form-field>
+            </div>
+            <div class="table_item">
+                <table mat-table [dataSource]="data_source_sous_rubrique_view" #sort_sous_rubrique_view="matSort" matSort>
                     
                     <ng-container matColumnDef="marche">
-                    <th mat-header-cell *matHeaderCellDef> Marché. </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Marché </th>
                     <td mat-cell *matCellDef="let sousRubriqueView"> {{sousRubriqueView.marche}} </td>
                     </ng-container>
                 
                     <ng-container matColumnDef="rubrique">
-                    <th mat-header-cell *matHeaderCellDef> Rubrique </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Rubrique </th>
                     <td mat-cell *matCellDef="let sousRubriqueView"> {{ sousRubriqueView.rubrique }} </td>
                     </ng-container>
                 
                     <ng-container matColumnDef="sous_rubrique">
-                    <th mat-header-cell *matHeaderCellDef> Sous-rubrique </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Sous-rubrique </th>
                     <td mat-cell *matCellDef="let sousRubriqueView"> {{sousRubriqueView.sous_rubrique}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="periode">
-                    <th mat-header-cell *matHeaderCellDef> Période </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Période </th>
                     <td mat-cell *matCellDef="let sousRubriqueView"> {{sousRubriqueView.periode}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="taux_avancement_sous_rubrique">
-                    <th mat-header-cell *matHeaderCellDef> Taux avancement </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Taux avancement </th>
                     <td mat-cell *matCellDef="let sousRubriqueView"> {{sousRubriqueView.taux_avancement_sous_rubrique | number : '1.1-1'}} % </td>
                     </ng-container>
 
                     <ng-container matColumnDef="progress_bar">
-                        <th mat-header-cell *matHeaderCellDef> Avancement </th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Avancement </th>
                         <td mat-cell *matCellDef="let sousRubriqueView"> 
                             <mat-progress-bar [value]="sousRubriqueView.taux_avancement_sous_rubrique" mode="determinate"> 
                                     {{ sousRubriqueView.taux_avancement_sous_rubrique }}
@@ -218,18 +228,21 @@
                 </div>
             </div>
             <div class="table_item">
-                <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                <mat-paginator #paginator_sous_rubrique_view [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
             </div>
         </div>
     </mat-tab>
     <!--  ************************ Table sous-rubrique & taux d'avencement ************************  -->
-    <!-- Fin des tabulations -->
+<!-- Fin des tabulations -->
 </mat-tab-group>
 
 <hr>
 
+
+<!--  ************************ Les diagrammes graphiques ************************  -->
 <!-- Taux d'avancement d'une sous-rubrique -->
-<form [formGroup]="sousRubriqueForm">
+
+<!-- <form [formGroup]="sousRubriqueForm">
     <div class="container">
         <div class="item">
             Seléctionner une sous-rubrique :
@@ -256,9 +269,12 @@
     </div>
 </form>
 
+
+
 <hr>
 
-<!-- Marché form -->
+
+
 <form [formGroup]="marcheForm">
     <div class="container">
         <div class="item">
@@ -282,7 +298,12 @@
 </form>
 
 
-<!-- Rubrique form -->
+
+<hr>
+
+
+
+
 <form [formGroup]="rubriqueForm">
     <div class="container">
         <div class="item">
@@ -303,16 +324,14 @@
             </div>
         </div>
     </div>
-    <!-- <div class="container">
-        <div class="item">
-            <div class="form-group">
-                <button type="submit" mat-raised-button color="accent" (click)="diagrammeRubrique()"> Diagramme de rubrique </button>            
-            </div>
-        </div>
-    </div> -->
 </form>
 
-<!-- Sous-Rubrique form -->
+
+
+<hr>
+
+
+
 <form [formGroup]="sousRubriqueForm">
     <div class="container">
         <div class="item">
@@ -333,16 +352,11 @@
             </div>
         </div>
     </div>
-    <!-- <div class="container">
-        <div class="item">
-            <div class="form-group">
-                <button type="submit" mat-raised-button color="accent" (click)="diagrammeSousRubrique()"> Diagramme de sous-rubrique </button>            
-            </div>
-        </div>
-    </div> -->
 </form>
 
 
 <div *ngIf="chart">
     <canvas id="canvas">{{ chart }}</canvas>
-</div>
+</div> -->
+
+<!--  ************************ fin des diagrammes graphiques ************************  -->

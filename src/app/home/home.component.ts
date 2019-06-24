@@ -58,16 +58,24 @@ export class HomeComponent implements OnInit {
   @ViewChild(MatPaginator) paginator_marche : MatPaginator;
 
   // La pagination de la table sous-rubrique view 
-  @ViewChild(MatPaginator) paginator_sous_rubrique_view : MatPaginator;
-  @ViewChild(MatSort) sort_sous_rubrique_view: MatSort;
+  // @ViewChild(MatPaginator) paginator_sous_rubrique_view : MatPaginator;
+  @ViewChild('paginator_sous_rubrique_view') paginator_sous_rubrique_view : MatPaginator;
+  @ViewChild('sort_sous_rubrique_view') sort_sous_rubrique_view: MatSort;
+  // @ViewChild(MatSort) sort_sous_rubrique_view: MatSort;
 
   // La pagination de la table rubrique view
+  // @ViewChild(MatPaginator) paginator_rubrique_view : MatPaginator;
   @ViewChild('paginator_rubrique_view') paginator_rubrique_view : MatPaginator;
-  @ViewChild(MatSort) sort_rubrique_view: MatSort;
+  @ViewChild('sort_rubrique_view') sort_rubrique_view: MatSort;
+  // @ViewChild(MatSort) sort_rubrique_view: MatSort;
+
 
   // La pagination & Trie de la table marche view
-  @ViewChild(MatPaginator) paginator_marche_view : MatPaginator;
-  @ViewChild(MatSort) sort_marche_view: MatSort;
+  // @ViewChild(MatPaginator) paginator_marche_view : MatPaginator;
+  @ViewChild('paginator_marche_view') paginator_marche_view : MatPaginator;
+  @ViewChild('sort_marche_view') sort_marche_view: MatSort;
+  // @ViewChild(MatSort) sort_marche_view: MatSort;
+
 
 
   /* -------------------------------------- Fin tables -------------------------------------- */
@@ -561,11 +569,31 @@ export class HomeComponent implements OnInit {
   }
 
   // Filter du dataTable marcheView
-  applyFilter(filterValue: string) {
+  filtrerMarcheView(filterValue: string) 
+  {
     this.data_source_marche_view.filter = filterValue.trim().toLowerCase();
 
     if (this.data_source_marche_view.paginator) {
       this.data_source_marche_view.paginator.firstPage();
+    }
+  }
+
+  // Filter du dataTable rubriqueView
+  filtrerRubriqueView(filterValue: string)
+  {
+    this.data_source_rubrique_view.filter = filterValue.trim().toLowerCase();
+    
+    if (this.data_source_rubrique_view.paginator) {
+      this.data_source_rubrique_view.paginator.firstPage();
+    }
+  }
+
+  filtrerSousRubriqueView(filterValue: string)
+  {
+    this.data_source_sous_rubrique_view.filter = filterValue.trim().toLowerCase();
+    
+    if (this.data_source_sous_rubrique_view.paginator) {
+      this.data_source_sous_rubrique_view.paginator.firstPage();
     }
   }
 
