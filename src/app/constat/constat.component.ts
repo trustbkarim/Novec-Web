@@ -1,6 +1,8 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { ConstatService } from 'app/Services/constat.service';
 import { Constats } from 'app/Model/Constats';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-constat',
@@ -11,7 +13,10 @@ export class ConstatComponent implements OnInit {
 
   // Material data table columns & dataSource
   displayedColumns: string[] = ['id_constat', 'id_marche', 'id_rubrique', 'id_sous_rubrique', 'id_periode', 'valeur_constat', 'editer', 'supprimer', 'ajouter'];
-  dataSource = [];
+  constat_data_table : Constats[] = [];
+  dataSource = new MatTableDataSource<Constats>(this.constat_data_table);
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  
   isLoading = true;
 
   constructor(private constatService : ConstatService, private changeDetectorRef : ChangeDetectorRef) 
@@ -19,6 +24,7 @@ export class ConstatComponent implements OnInit {
 
   ngOnInit() 
   {
+    this.dataSource.paginator = this.paginator;
     // Récupération des données
     this.refresh();
   }
@@ -31,7 +37,7 @@ export class ConstatComponent implements OnInit {
       (response : Constats[]) => 
       {
         this.isLoading = false;
-        this.dataSource = response;
+        this.dataSource.data = response;
         this.changeDetectorRef.detectChanges();
       }
     )

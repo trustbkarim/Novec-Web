@@ -1,6 +1,8 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { SousRubriqueService } from 'app/Services/sous-rubrique.service';
 import { SousRubriques } from 'app/Model/SousRubriques';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-sous-rubrique',
@@ -11,7 +13,10 @@ export class SousRubriqueComponent implements OnInit {
 
   // Material data table columns & dataSource
   displayedColumns: string[] = ['id_sous_rubrique', 'id_marche', 'id_rubrique', 'lib_sous_rubrique', 'unite', 'valeur_cible', 'editer', 'supprimer', 'ajouter'];
-  dataSource = [];
+  sous_rubrique_data_table : SousRubriques[] = [];
+  dataSource = new MatTableDataSource<SousRubriques>(this.sous_rubrique_data_table);
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   isLoading = true;
 
   constructor(private sousRubriqueService : SousRubriqueService, private changeDetectorRef : ChangeDetectorRef) 
@@ -19,6 +24,7 @@ export class SousRubriqueComponent implements OnInit {
 
   ngOnInit() 
   {
+    this.dataSource.paginator = this.paginator;
     this.refresh();
   }
 
@@ -29,9 +35,8 @@ export class SousRubriqueComponent implements OnInit {
     .subscribe(
       (response : SousRubriques[]) => 
       {
-        console.log(response)
         this.isLoading = false;
-        this.dataSource = response;
+        this.dataSource.data = response;
         this.changeDetectorRef.detectChanges();
       }
     )

@@ -43,7 +43,7 @@ export class AuthentificationService {
         {
           localStorage.setItem('access_token', result.access_token);
           this.isLoggedIn = true;
-          console.log(result)
+          // console.log(result)
         }
       })
     )

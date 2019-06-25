@@ -48,7 +48,7 @@ export class UserComponent implements OnInit {
       {
         if (this.authentificationService.isLoggedIn == true )
         {
-          this.goTo('constat')
+          this.goTo('dashboard')
         }
       }
     )

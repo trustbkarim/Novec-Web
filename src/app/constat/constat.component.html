@@ -68,11 +68,17 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
   </div>
+  
   <div class="table_item">
     <div *ngIf="isLoading">
         <mat-progress-spinner color="accent" mode="indeterminate"> </mat-progress-spinner>
     </div>
   </div>
+
+  <div class="table_item">
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div>
+
   <div class="table_item">
     <button mat-raised-button color="accent"> Charger les données depuis un fichier Excel </button>
   </div>

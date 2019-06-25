@@ -1,7 +1,9 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { RubriqueService } from 'app/Services/rubrique.service';
 import { Rubriques } from 'app/Model/Rubriques';
 import { resolve } from 'url';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-rubrique',
@@ -12,7 +14,10 @@ export class RubriqueComponent implements OnInit {
 
   // Material data table columns & dataSource
   displayedColumns: string[] = ['id', 'id_marche', 'lib_rubrique', 'editer', 'supprimer', 'ajouter'];
-  dataSource = [];
+  rubrique_data_table : Rubriques[] = [];
+  dataSource = new MatTableDataSource<Rubriques>(this.rubrique_data_table);
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   isLoading = true;
 
   constructor(private rubriqueService : RubriqueService, private changeDetectorRef : ChangeDetectorRef) 
@@ -20,6 +25,7 @@ export class RubriqueComponent implements OnInit {
 
   ngOnInit() 
   {
+    this.dataSource.paginator = this.paginator;
     this.refresh();
   }
 
@@ -31,7 +37,7 @@ export class RubriqueComponent implements OnInit {
       (response : Rubriques[]) =>
       {
         this.isLoading = false;
-        this.dataSource = response;
+        this.dataSource.data = response;
         this.changeDetectorRef.detectChanges();
       }
     )

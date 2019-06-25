@@ -12,8 +12,8 @@ import { RubriqueComponent } from 'app/rubrique/rubrique.component';
 import { SousRubriqueComponent } from 'app/sous-rubrique/sous-rubrique.component';
 
 export const AdminLayoutRoutes: Routes = [
-    { path: 'dashboard',      component: HomeComponent },
     { path: 'user',           component: UserComponent },
+    { path: 'dashboard',      component: HomeComponent },
     { path: 'constat',        component: ConstatComponent },
     { path: 'marche',         component: MarcheComponent },
     { path: 'OrdresService',  component: OrdreServiceComponent },
