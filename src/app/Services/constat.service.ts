@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import 'rxjs/Rx';
 import { Constats } from 'app/Model/Constats';
 import { HttpClient } from '@angular/common/http';
+import 'rxjs/Rx';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConstatService {
 
-  constructor(private http : HttpClient) 
+  constructor(public http : HttpClient) 
   { }
 
   // Foncion de récupération de la liste des constats
@@ -31,7 +31,18 @@ export class ConstatService {
       (response => {
         return response;
       }
-      ));
+    ));
+  }
+
+  // Fonction pour editer le constat
+  constatEdit(constatEdited : Constats, id: number) : Observable<any>
+  {
+    return this.http.put('http://localhost:8000/api/constat/' + id, constatEdited)
+    .map(
+      (response => {
+        return response;
+      })
+    );
   }
 
   // Fonction pour supprimer 

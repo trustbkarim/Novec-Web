@@ -3,6 +3,9 @@ import { ConstatService } from 'app/Services/constat.service';
 import { Constats } from 'app/Model/Constats';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material';
+import { AjoutConstatComponent } from './ajout-constat/ajout-constat.component';
+import { EditeConstatComponent } from './edite-constat/edite-constat.component';
 
 @Component({
   selector: 'app-constat',
@@ -16,15 +19,16 @@ export class ConstatComponent implements OnInit {
   constat_data_table : Constats[] = [];
   dataSource = new MatTableDataSource<Constats>(this.constat_data_table);
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  
+
   isLoading = true;
 
-  constructor(private constatService : ConstatService, private changeDetectorRef : ChangeDetectorRef) 
+  constructor(public constatService : ConstatService, public dialog : MatDialog, private changeDetectorRef : ChangeDetectorRef) 
   { }
 
   ngOnInit() 
   {
     this.dataSource.paginator = this.paginator;
+    
     // Récupération des données
     this.refresh();
   }
@@ -43,4 +47,49 @@ export class ConstatComponent implements OnInit {
     )
   }
 
+  // Ajouter les données de la table constat
+  ajouterConstat()
+  {
+    const dialogRef = this.dialog.open(AjoutConstatComponent, 
+      {
+        disableClose : false
+      }
+    );
+
+    dialogRef.afterClosed()
+    .subscribe(
+      result => 
+      { 
+        this.refresh() 
+      }
+    );
+  }
+
+  // Editer les données de la table constat
+  editerConstat(constat :  Constats)
+  {
+    const dialogRef = this.dialog.open(EditeConstatComponent, 
+      {
+        disableClose : false,
+
+        data :
+        {
+          item : constat
+        }
+    });
+
+    dialogRef.afterClosed()
+    .subscribe(
+      result => 
+      { 
+        this.refresh(); 
+      }
+    );
+  }
+
+  // Suppriler les données de la table constat
+  supprimerConstat()
+  {
+
+  }
 }

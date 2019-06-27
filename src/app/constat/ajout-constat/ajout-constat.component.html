@@ -1,0 +1,67 @@
+<form [formGroup]="constatForm">
+
+    <div class="form_container">
+        <div class="form_item">
+            <div class="form-group">
+                <mat-form-field hintLabel="Marché">
+                <input type="text" name="id_marche" matInput formControlName="id_marche" class="form-control" maxlength="20" placeholder="Marché" required autocomplete="off">
+                    <mat-error *ngIf="submitted && constatForm.get('id_marche').hasError('required')">
+                        Marché est obligatoire !
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="form_item">
+            <div class="form-group">
+                <mat-form-field hintLabel="Rubrique">
+                <input type="text" name="id_rubrique" matInput formControlName="id_rubrique" class="form-control" maxlength="20" placeholder="Rubrique" required autocomplete="off">
+                    <mat-error *ngIf="submitted && constatForm.get('id_rubrique').hasError('required')">
+                        Rubrique est obligatoire !
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <div class="form_container">
+        <div class="form_item">
+            <div class="form-group">
+                <mat-form-field hintLabel="Sous-rubrique">
+                <input type="text" name="id_sous_rubrique" matInput formControlName="id_sous_rubrique" class="form-control" maxlength="20" placeholder="Sous-rubrique" required autocomplete="off">
+                    <mat-error *ngIf="submitted && constatForm.get('id_sous_rubrique').hasError('required')">
+                        Sous-rubrique est obligatoire !
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="form_item">
+            <div class="form-group">
+                <mat-form-field hintLabel="La période">
+                <input type="text" name="id_periode" matInput formControlName="id_periode" class="form-control" maxlength="20" placeholder="La période" required autocomplete="off">
+                    <mat-error *ngIf="submitted && constatForm.get('id_periode').hasError('required')">
+                        La période est obligatoire !
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="form_item">
+            <div class="form-group">
+                <mat-form-field hintLabel="La valeur constatée">
+                <input type="text" name="valeur_constat" matInput formControlName="valeur_constat" class="form-control" maxlength="20" placeholder="la valeur constatée" required autocomplete="off">
+                    <mat-error *ngIf="submitted && constatForm.get('valeur_constat').hasError('required')">
+                        La valeur constatée est obligatoire !
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+
+    <div class="button_container">
+        <div class="form_item">
+            <div class="form-group">
+                <button type="submit" mat-raised-button (click)="onClose()"> Fermer </button>
+                <button type="submit" mat-raised-button color="accent" [disabled]="constatForm.pristine || constatForm.invalid" (click)="ajouterConstat()"> Ajouter Constat </button>
+            </div>
+        </div>
+    </div>
+
+</form>

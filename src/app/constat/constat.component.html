@@ -42,7 +42,7 @@
         <ng-container matColumnDef="editer">
             <th mat-header-cell *matHeaderCellDef> </th>
             <td mat-cell *matCellDef="let constat">
-              <button mat-button (click)="editDialog(employee)"> <mat-icon> brush </mat-icon> </button>
+              <button mat-button (click)="editerConstat(constat)"> <mat-icon> brush </mat-icon> </button>
             </td>
         </ng-container>
 
@@ -50,14 +50,14 @@
         <ng-container matColumnDef="supprimer">
               <th mat-header-cell *matHeaderCellDef> </th>
               <td mat-cell *matCellDef="let constat">
-                  <button mat-button (click)="deleteDialog(employee.id)"> <mat-icon> delete </mat-icon> </button>
+                  <button mat-button (click)="supprimerConstat(constat.id)"> <mat-icon> delete </mat-icon> </button>
               </td>
         </ng-container>
 
         <!-- Colonne ajouter -->
         <ng-container matColumnDef="ajouter">
             <th mat-header-cell *matHeaderCellDef>
-              <button mat-raised-button (click)="addDialog()" color="accent"> <mat-icon> add </mat-icon> </button>
+              <button mat-raised-button (click)="ajouterConstat()" color="accent"> <mat-icon> add </mat-icon> </button>
             </th>
             <td mat-cell *matCellDef="let constat">
               <button mat-button> </button>
@@ -68,7 +68,7 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
   </div>
-  
+
   <div class="table_item">
     <div *ngIf="isLoading">
         <mat-progress-spinner color="accent" mode="indeterminate"> </mat-progress-spinner>

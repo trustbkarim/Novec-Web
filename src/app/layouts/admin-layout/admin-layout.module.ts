@@ -36,6 +36,11 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTabsModule } from '@angular/material/tabs';
+import { AjoutConstatComponent } from 'app/constat/ajout-constat/ajout-constat.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ConstatService } from 'app/Services/constat.service';
+import { EditeConstatComponent } from 'app/constat/edite-constat/edite-constat.component';
+
 
 
 
@@ -63,7 +68,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatSortModule,
     MatProgressBarModule,
     MatTabsModule,
-    
+    MatDialogModule,
     
 
     // Chart module 
@@ -81,8 +86,18 @@ import { MatTabsModule } from '@angular/material/tabs';
     PeriodeComponent,
     RubriqueComponent,
     SousRubriqueComponent,
+    AjoutConstatComponent,
+    EditeConstatComponent
 
-  ]
+  ], 
+  providers : [
+    ConstatService
+  ],
+  entryComponents : [
+    AjoutConstatComponent,
+    EditeConstatComponent,
+
+  ],
 })
 
 export class AdminLayoutModule {}
