@@ -52,6 +52,142 @@
 
 <!-- Les tabulations afin d'afficher chaque avancement (avancement marché, rubrique, sous-rubrique) tout seul -->
 <mat-tab-group mat-align-tabs="center">
+
+    <!--  ************************ Table Marche & taux d'avencement ************************  -->
+    <mat-tab label="Table des informations">
+        <div class="table_container">
+            <div class="table_item">
+                <h3> Informations générales ! </h3>
+            </div>
+
+            <!-- Filter de date -->
+            <form [formGroup]="filtreForm">
+                <div class="table_item">
+                    <div class="form-group">
+                        <mat-form-field>
+                                <mat-select (selectionChange)="remplirSelectRubriqueDependMarcheSelectionne()" name="id_marche" class="form-control" formControlName="id_marche" placeholder="Marché">
+                                    <mat-option *ngFor="let marche of marchesList" [value]="marche.id_marche"> {{marche.intitule}} </mat-option>
+                                </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group">
+                        <mat-form-field>
+                            <mat-select (selectionChange)="remplirSelectSousRubriqueDependRubriqueSelectionnee()" name="id" class="form-control" formControlName="id" placeholder="Rubriques">
+                                <mat-option *ngFor="let rubrique of rubriques_depend_marche_pour_filtre" [value]="rubrique.id"> {{rubrique.lib_rubrique}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-group">
+                        <mat-form-field>
+                            <mat-select name="id_sous_rubrique" class="form-control" formControlName="id_sous_rubrique" placeholder="Veuillez seléctionner une rubrique">
+                                <mat-option *ngFor="let sousRubrique of sous_rubriques_depend_rubrique_pour_filtre" [value]="sousRubrique.id_sous_rubrique"> {{sousRubrique.lib_sous_rubrique}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <!-- <div class="table_item">
+                    <div class="form-group">
+                        <mat-form-field>
+                            <mat-label> Depuis </mat-label>
+                            <mat-select>
+                                <mat-option *ngFor="let periode of distinctPeriodes" [value]="periode.periode" formControlName="periode" class="form-control"> {{periode.periode}} </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="submitted && filtreForm.get('periode').hasError('required')">
+                                La date est obligatoire !
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-group">
+                        <mat-form-field>
+                            <mat-label> Au </mat-label>
+                            <mat-select>
+                                <mat-option *ngFor="let periode of distinctPeriodes" [value]="periode.periode" formControlName="periode" class="form-control"> {{periode.periode}} </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="submitted && filtreForm.get('periode').hasError('required')">
+                                La date est obligatoire !
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div> -->
+                <div class="table_item">
+                    <div class="table_item">
+                            <button mat-raised-button color="primary" class="primary" [disabled]="filtreForm.pristine || filtreForm.invalid" (click)="filtrerDate()"> Filter </button>
+                    </div>
+                </div>
+            </form>
+            <!-- <form [formGroup]="filtreForm">
+                <div class="table_item">
+                    <mat-form-field>
+                        <input matInput [matDatepicker]="fromDate" placeholder="Depuis" formControlName="fromDate">
+                        <mat-datepicker-toggle matSuffix [for]="fromDate"></mat-datepicker-toggle>
+                        <mat-datepicker #fromDate></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="table_item">
+                    <mat-form-field>
+                        <input matInput [matDatepicker]="toDate" placeholder="Vers" formControlName="toDate">
+                        <mat-datepicker-toggle matSuffix [for]="toDate"></mat-datepicker-toggle>
+                        <mat-datepicker #toDate></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div class="table_item">
+                    <button mat-raised-button color="primary" class="primary" (click)="filtrerDate()"> Filter </button>
+                </div>
+            </form> -->
+            <!-- Fin du filter de date -->
+            <div class="table_item">
+                <mat-form-field class="filter">
+                    <input matInput (keyup)="filtrerInformationsView($event.target.value)" placeholder="Que recherchez-vous ?">
+                </mat-form-field>
+            </div>
+            <div class="table_item">
+                <table mat-table [dataSource]="data_source_table_informations_view" #sort_informations_view="matSort" matSort>
+                
+                    <ng-container matColumnDef="marche">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Marché. </th>
+                    <td mat-cell *matCellDef="let informationView"> {{informationView.marche}} </td>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="rubrique">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Rubrique. </th>
+                    <td mat-cell *matCellDef="let informationView"> {{informationView.rubrique}} </td>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="sous_rubrique">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Sous-Rubrique. </th>
+                    <td mat-cell *matCellDef="let informationView"> {{informationView.sous_rubrique}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="periode">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Période. </th>
+                    <td mat-cell *matCellDef="let informationView"> {{informationView.periode }} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="valeur_cible">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Valeur cible </th>
+                    <td mat-cell *matCellDef="let informationView"> {{informationView.valeur_cible }} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="valeur_constat">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Valeur constat. </th>
+                    <td mat-cell *matCellDef="let informationView"> {{informationView.valeur_constat }} </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayed_columns_table_informations" ></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayed_columns_table_informations;"></tr>
+                </table>
+            </div>
+            <div class="table_item">
+                <div *ngIf="progress">
+                    <mat-progress-spinner color="button-raised-accent" mode="indeterminate"> </mat-progress-spinner>
+                </div>
+            </div>
+            <div class="table_item">
+                <mat-paginator #paginator_informations_view [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+            </div>
+        </div>
+    </mat-tab>
       
     <!--  ************************ Table Marche & taux d'avencement ************************  -->
     <mat-tab label="Avancement du marché">
@@ -73,17 +209,17 @@
                     </ng-container>
         
                     <ng-container matColumnDef="periode">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Période </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Période. </th>
                     <td mat-cell *matCellDef="let marcheView"> {{marcheView.periode}} </td>
                     </ng-container>
         
                     <ng-container matColumnDef="taux_avancement_marche">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Taux avancement </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Taux avancement. </th>
                     <td mat-cell *matCellDef="let marcheView"> {{marcheView.taux_avancement_marche | number : '1.1-1' }} % </td>
                     </ng-container>
 
                     <ng-container matColumnDef="progress_bar">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Avancement </th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Avancement. </th>
                         <td mat-cell *matCellDef="let marcheView"> 
                             <mat-progress-bar [value]="marcheView.taux_avancement_marche" mode="determinate"> 
                                     {{ marcheView.taux_avancement_marche }}
@@ -129,22 +265,22 @@
                     </ng-container>
                 
                     <ng-container matColumnDef="rubrique">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Rubrique </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Rubrique. </th>
                     <td mat-cell *matCellDef="let rubriqueView"> {{ rubriqueView.rubrique }} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="periode">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Période </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Période. </th>
                     <td mat-cell *matCellDef="let rubriqueView"> {{rubriqueView.periode}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="taux_avancement_rubrique">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Taux avancement </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Taux avancement. </th>
                     <td mat-cell *matCellDef="let rubriqueView"> {{rubriqueView.taux_avancement_rubrique | number : '1.1-1'}} % </td>
                     </ng-container>
 
                     <ng-container matColumnDef="progress_bar">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Avancement </th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Avancement. </th>
                         <td mat-cell *matCellDef="let rubriqueView"> 
                             <mat-progress-bar [value]="rubriqueView.taux_avancement_rubrique" mode="determinate"> 
                                 {{ rubriqueView.taux_avancement_rubrique }}
@@ -185,32 +321,32 @@
                 <table mat-table [dataSource]="data_source_sous_rubrique_view" #sort_sous_rubrique_view="matSort" matSort>
                     
                     <ng-container matColumnDef="marche">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Marché </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Marché. </th>
                     <td mat-cell *matCellDef="let sousRubriqueView"> {{sousRubriqueView.marche}} </td>
                     </ng-container>
                 
                     <ng-container matColumnDef="rubrique">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Rubrique </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Rubrique. </th>
                     <td mat-cell *matCellDef="let sousRubriqueView"> {{ sousRubriqueView.rubrique }} </td>
                     </ng-container>
                 
                     <ng-container matColumnDef="sous_rubrique">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Sous-rubrique </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Sous-rubrique. </th>
                     <td mat-cell *matCellDef="let sousRubriqueView"> {{sousRubriqueView.sous_rubrique}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="periode">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Période </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Période. </th>
                     <td mat-cell *matCellDef="let sousRubriqueView"> {{sousRubriqueView.periode}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="taux_avancement_sous_rubrique">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Taux avancement </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Taux avancement. </th>
                     <td mat-cell *matCellDef="let sousRubriqueView"> {{sousRubriqueView.taux_avancement_sous_rubrique | number : '1.1-1'}} % </td>
                     </ng-container>
 
                     <ng-container matColumnDef="progress_bar">
-                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Avancement </th>
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Avancement. </th>
                         <td mat-cell *matCellDef="let sousRubriqueView"> 
                             <mat-progress-bar [value]="sousRubriqueView.taux_avancement_sous_rubrique" mode="determinate"> 
                                     {{ sousRubriqueView.taux_avancement_sous_rubrique }}

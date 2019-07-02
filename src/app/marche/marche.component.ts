@@ -6,8 +6,8 @@ import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-marche',
+  styleUrls: ['./marche.component.scss'],
   templateUrl: './marche.component.html',
-  styleUrls: ['./marche.component.scss']
 })
 export class MarcheComponent implements OnInit {
 

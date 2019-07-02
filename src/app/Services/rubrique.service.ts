@@ -22,4 +22,17 @@ export class RubriqueService {
       })
     )
   }
+
+  // Récupération d'une rubrique spécifique
+  rubriqueSpecifique(id : Number)
+  {
+    return this.http.get('http://localhost:8000/api/rubrique/' + id)
+    .map(
+      (response =>
+        {
+          return response
+        } 
+      )
+    )
+  }
 }

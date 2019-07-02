@@ -40,6 +40,8 @@ import { AjoutConstatComponent } from 'app/constat/ajout-constat/ajout-constat.c
 import { MatDialogModule } from '@angular/material/dialog';
 import { ConstatService } from 'app/Services/constat.service';
 import { EditeConstatComponent } from 'app/constat/edite-constat/edite-constat.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material';
 
 
 
@@ -69,7 +71,8 @@ import { EditeConstatComponent } from 'app/constat/edite-constat/edite-constat.c
     MatProgressBarModule,
     MatTabsModule,
     MatDialogModule,
-    
+    MatDatepickerModule,
+    MatNativeDateModule,
 
     // Chart module 
     ChartsModule,
@@ -91,7 +94,8 @@ import { EditeConstatComponent } from 'app/constat/edite-constat/edite-constat.c
 
   ], 
   providers : [
-    ConstatService
+    // ConstatService,
+    MatDatepickerModule,
   ],
   entryComponents : [
     AjoutConstatComponent,

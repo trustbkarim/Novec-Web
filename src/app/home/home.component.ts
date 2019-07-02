@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import Chart = require('chart.js');
 import { ConstatService } from 'app/Services/constat.service';
 import { Constats } from 'app/Model/Constats';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MarcheService } from 'app/Services/marche.service';
 import { Marches } from 'app/Model/Marches';
 import { SousRubriqueService } from 'app/Services/sous-rubrique.service';
@@ -21,6 +21,13 @@ import { RubriqueView } from 'app/Model/RubriqueView';
 import { MarcheView } from 'app/Model/MarcheView';
 import { MarcheViewService } from 'app/Services/marche-view.service';
 import { MatSort } from '@angular/material/sort';
+import { TableInformationsView } from 'app/Model/TableInformationsView';
+import { TableInformationsViewService } from 'app/Services/table-informations-view.service';
+import { DatePipe } from '@angular/common';
+import * as moment from 'moment';
+import { DistinctPeriodesService } from 'app/Services/distinct-periodes.service';
+import { DistinctPeriodes } from 'app/Model/distinctPeriodes';
+import { FiltreDateTableInfosGenerale } from 'app/Model/FiltreDateTableInfosGenerale';
 
 @Component({
   selector: 'app-home',
@@ -30,6 +37,11 @@ import { MatSort } from '@angular/material/sort';
 export class HomeComponent implements OnInit {
 
   /* -------------------------------------- Tables -------------------------------------- */
+
+  // DataSource & DisplayedColumns pour la table Informations VIEW
+  displayed_columns_table_informations : string[] = ['marche', 'rubrique', 'sous_rubrique', 'periode', 'valeur_cible', 'valeur_constat'];
+  table_informations : TableInformationsView[] = [];
+  data_source_table_informations_view = new MatTableDataSource<TableInformationsView>(this.table_informations);
 
   // DataSource & DisplayedColumns pour la table MARCHE
   displayed_columns_marche: string[] = ['id_marche', 'num_marche', 'intitule', 'duree_jour', 'duree_mois', 'montant_marche'];
@@ -51,31 +63,51 @@ export class HomeComponent implements OnInit {
   marche_avancement_data_table : MarcheView[] = [];
   data_source_marche_view = new MatTableDataSource<MarcheView>(this.marche_avancement_data_table);
 
+
   // Afficher le progress spinner
   progress = true;
 
   // La pagination de la table marché
   @ViewChild(MatPaginator) paginator_marche : MatPaginator;
 
+  // La pagination & Trie de la table informations générale view
+  @ViewChild('paginator_informations_view') paginator_informations_view : MatPaginator;
+  @ViewChild('sort_informations_view') sort_informations_view: MatSort;
+  pipe: DatePipe;
+
   // La pagination de la table sous-rubrique view 
-  // @ViewChild(MatPaginator) paginator_sous_rubrique_view : MatPaginator;
   @ViewChild('paginator_sous_rubrique_view') paginator_sous_rubrique_view : MatPaginator;
   @ViewChild('sort_sous_rubrique_view') sort_sous_rubrique_view: MatSort;
-  // @ViewChild(MatSort) sort_sous_rubrique_view: MatSort;
 
   // La pagination de la table rubrique view
-  // @ViewChild(MatPaginator) paginator_rubrique_view : MatPaginator;
   @ViewChild('paginator_rubrique_view') paginator_rubrique_view : MatPaginator;
   @ViewChild('sort_rubrique_view') sort_rubrique_view: MatSort;
-  // @ViewChild(MatSort) sort_rubrique_view: MatSort;
 
 
   // La pagination & Trie de la table marche view
-  // @ViewChild(MatPaginator) paginator_marche_view : MatPaginator;
   @ViewChild('paginator_marche_view') paginator_marche_view : MatPaginator;
   @ViewChild('sort_marche_view') sort_marche_view: MatSort;
-  // @ViewChild(MatSort) sort_marche_view: MatSort;
 
+  distinctPeriodes : DistinctPeriodes[];
+
+
+  /* -------------------- Filtre de date -------------------- */
+
+  // Filtre de date poutr la table informations générale
+  filtreForm : FormGroup;
+  filtre_date_table_infos_generale : FiltreDateTableInfosGenerale;
+
+  // // Avoir la valeur de la date
+  // get fromDate() 
+  // {
+  //   return this.filtreForm.get('fromDate').value; 
+  // }
+
+  // get toDate() 
+  // { 
+  //   return this.filtreForm.get('toDate').value; 
+  // }
+  /* -------------------- Filtre de date -------------------- */
 
 
   /* -------------------------------------- Fin tables -------------------------------------- */
@@ -114,9 +146,11 @@ export class HomeComponent implements OnInit {
 
   // Liste des sous-rubriques
   sousRubriquesList : SousRubriques[];
+  sous_rubriques_depend_rubrique_pour_filtre : SousRubriques[] = [];
 
   // Liste des rubriques
   rubriquesList : Rubriques[];
+  rubriques_depend_marche_pour_filtre : Rubriques[] = [];
 
   // Pour stocker l'objet sous-rubrique, afin d'avoir la période pour afficher le diagramme
   sousRubriqueObjet : SousRubriques;
@@ -181,8 +215,26 @@ export class HomeComponent implements OnInit {
   isLoading = false;
 
   /* --------------------------------- Variables de taux d'avancement --------------------------------- */
-  constructor(private marcheViewService : MarcheViewService, private rubriqueViewService : RubriqueViewService, private sousRubriqueViewService : SousRubriqueViewService, private rubriqueService : RubriqueService, private constatService : ConstatService, private periodService : PeriodeService, private sousRubriqueService : SousRubriqueService, private marcheService : MarcheService, private formBuilder : FormBuilder, private http : HttpClient, private changeDetectorRef : ChangeDetectorRef) 
+  constructor(private distinctPeriodesViewService : DistinctPeriodesService, private tableInformationViewService : TableInformationsViewService, private marcheViewService : MarcheViewService, private rubriqueViewService : RubriqueViewService, private sousRubriqueViewService : SousRubriqueViewService, private rubriqueService : RubriqueService, private constatService : ConstatService, private periodService : PeriodeService, private sousRubriqueService : SousRubriqueService, private marcheService : MarcheService, private formBuilder : FormBuilder, private http : HttpClient, private changeDetectorRef : ChangeDetectorRef) 
   { 
+    // Filtre de date pour la table Informations Générales
+    this.data_source_table_informations_view.filterPredicate = (data, filter) =>
+    {
+      if (this.filtre_date_table_infos_generale.date_debut && this.filtre_date_table_infos_generale.date_fin) 
+      {
+        return data.periode >= this.filtre_date_table_infos_generale.date_debut && data.periode <= this.filtre_date_table_infos_generale.date_fin;
+      }
+      return true;
+    }
+    // this.pipe = new DatePipe('en');
+    // this.data_source_table_informations_view.filterPredicate = (data, filter) =>
+    // {
+    //   if (this.fromDate && this.toDate) 
+    //   {
+    //     return data.periode >= this.fromDate && data.periode <= this.toDate;
+    //   }
+    //   return true;
+    // }
     // this.data_source_marche = new MatTableDataSource<Marches>(this.marche_data_table)
     // this.data_source_sous_rubrique_view = new MatTableDataSource<SousRubriqueView>(this.sous_rubrique_avancement_data_table)
   }
@@ -190,6 +242,44 @@ export class HomeComponent implements OnInit {
 
   ngOnInit()
   {
+
+    // Remplir le select du marché 
+    this.marcheService.marcheList()
+    .subscribe(
+      response => 
+      {
+        this.marchesList = response;
+      }
+    );
+
+    // récupéré la liste des rubriques, afin de remplir le SELECT de la rubrique qui correspond le marché
+    this.rubriqueService.rubriqueList()
+    .subscribe(
+      response =>
+      {
+        this.rubriquesList = response
+      }
+    )
+
+    // Remplir le SELECT de la sous-rubrique
+    this.sousRubriqueService.sousRubriqueList()
+    .subscribe(
+      response =>
+      {
+        this.sousRubriquesList = response;
+        this.liste_des_sous_rubriques = response;
+      }
+     )
+
+    // Sélectionner la liste des périodes distinguée, afin d'afficher pour le filtrage
+    this.distinctPeriodesViewService.distinctPeriodeViewList()
+    .subscribe(
+      response =>
+      {
+        this.distinctPeriodes = response;
+      }
+    )
+
     // Avoir la liste des constats, afin de calculer le taux d'avencement sur le DataTable sous-rubrique
     // this.constatService.constatList()
     // .subscribe(
@@ -203,6 +293,9 @@ export class HomeComponent implements OnInit {
     // Le dataTable marché
     // this.afficherDataTableMarches();
 
+    // le DataTable informations générales view
+    this.afficherDataTableInformationsView();
+
     // Le dataTable marche view
     this.afficherDataTableMarcheView();
 
@@ -212,28 +305,25 @@ export class HomeComponent implements OnInit {
     // Le dataTable sous-rubrique-view
     this.afficherDataTableRubriqueView();
 
-    // La pagination de la table marché
+    // La pagination de la table informations view
+    this.data_source_table_informations_view.paginator = this.paginator_informations_view;
+    this.data_source_table_informations_view.sort = this.sort_informations_view;
+
+    // La pagination de la table marché view
     this.data_source_marche_view.paginator = this.paginator_marche_view;
     this.data_source_marche_view.sort = this.sort_marche_view;
 
-    // La pagination de la table rubrique
+    // La pagination de la table rubrique view
     this.data_source_rubrique_view.paginator = this.paginator_rubrique_view;
     this.data_source_rubrique_view.sort = this.sort_rubrique_view;
 
-    // La pagination de la table sous-rubrique
+    // La pagination de la table sous-rubrique view
     this.data_source_sous_rubrique_view.paginator = this.paginator_sous_rubrique_view; 
     this.data_source_sous_rubrique_view.sort = this.sort_sous_rubrique_view;
 
 
 
     // Affichage du taux d'avanacement : remplir le select de la sous-rubrique
-    this.sousRubriqueService.sousRubriqueList()
-    .subscribe(
-      response =>
-      {
-        this.liste_des_sous_rubriques = response;
-      }
-     )
     this.sousRubriqueViewService.sousRubriqueViewList()
     .subscribe(
       response => 
@@ -242,30 +332,13 @@ export class HomeComponent implements OnInit {
       }
     )
 
-    // Remplir le select du marché 
-    this.marcheService.marcheList()
-    .subscribe(
-      response => 
-      {
-        this.marchesList = response;
-      }
-    );
-
     // Récupéré les période 
     // this.periodService.periodeList()
     // .subscribe(
     //   response => 
     //   {
     //     this.periodesList = response;
-    //   }
-    // )
-
-    // Récupéré le select des rubriques
-    // this.rubriqueService.rubriqueList()
-    // .subscribe(
-    //   response =>
-    //   {
-    //     this.rubriquesList = response
+    //     console.log(this.periodesList)
     //   }
     // )
     
@@ -274,6 +347,13 @@ export class HomeComponent implements OnInit {
     // this.constatFrom = this.formBuilder.group({
     //   id_sous_rubrique : [null, Validators.required]
     // })
+
+    // Validation de filtre de la table Informations Génerales
+    this.filtreForm = this.formBuilder.group({
+      id_marche : [null, Validators.required],
+      id : [null, Validators.required],
+      id_sous_rubrique : [null, Validators.required]
+    });
 
     // Validations du marché
     this.marcheForm = this.formBuilder.group({
@@ -292,6 +372,13 @@ export class HomeComponent implements OnInit {
     
   }
 
+  // Valeur du SELECT, pour le filtrage de la table Informations Générale
+  valeurForm()
+  {
+    this.filtre_date_table_infos_generale.date_debut = this.filtreForm.get('periode').value;
+    this.filtre_date_table_infos_generale.date_fin = this.filtreForm.get('periode').value;
+  }
+
   /* --------------------------------- Fonctions de remplissage des tables --------------------------------- */
   // fonction qui remplie la table des marchés
   // afficherDataTableMarches()
@@ -305,6 +392,19 @@ export class HomeComponent implements OnInit {
   //     }
   //   )
   // }
+
+  // fonction qui remplie la table des informations générales view
+  afficherDataTableInformationsView()
+  {
+    this.tableInformationViewService.tableInformationsList()
+    .subscribe(
+      (response : TableInformationsView[]) => 
+      {
+        this.progress = false;
+        this.data_source_table_informations_view.data = response;
+      }
+    )
+  }
 
   // fonction qui remplie la table des marché view
   afficherDataTableMarcheView()
@@ -568,7 +668,31 @@ export class HomeComponent implements OnInit {
     this.suivi_avancement_constat_sur_valeur_cible = [];
   }
 
-  // Filter du dataTable marcheView
+  // Valeur de formulaire de filtre des périodes
+  valeurFormPeriode()
+  {
+
+  }
+
+  // Filtre de date
+  filtrerDate() 
+  {
+    this.data_source_table_informations_view.filter = ''+ Math.random();
+  }
+
+  /* --------------------- Filtrage (Material Angular Data Table) pour les tables : Marché, Rubrique, Sous-rubrique. --------------------- */
+  // Filtre du dataTable InformationsView
+  filtrerInformationsView(filterValue: string)
+  {
+    this.data_source_table_informations_view.filter = filterValue.trim().toLowerCase();
+    
+    if (this.data_source_table_informations_view.paginator) 
+    {
+      this.data_source_table_informations_view.paginator.firstPage();
+    }
+  }
+
+  // Filtre du dataTable marcheView
   filtrerMarcheView(filterValue: string) 
   {
     this.data_source_marche_view.filter = filterValue.trim().toLowerCase();
@@ -578,7 +702,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  // Filter du dataTable rubriqueView
+  // Filtre du dataTable rubriqueView
   filtrerRubriqueView(filterValue: string)
   {
     this.data_source_rubrique_view.filter = filterValue.trim().toLowerCase();
@@ -588,6 +712,7 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  // Filtre du dataTable SousRubriqueView
   filtrerSousRubriqueView(filterValue: string)
   {
     this.data_source_sous_rubrique_view.filter = filterValue.trim().toLowerCase();
@@ -596,5 +721,48 @@ export class HomeComponent implements OnInit {
       this.data_source_sous_rubrique_view.paginator.firstPage();
     }
   }
+  /* --------------------- Fin filtrage (Material Angular Data Table) pour les tables : Marché, Rubrique, Sous-rubrique. --------------------- */
+
+
+
+  /* ---------------------------------- Filtre pour la table Informations Générale  ---------------------------------- */
+
+  // Avoir la valeur du l'élément seléctionné (du marché), afin de remplir le SELECT suivant (de la rubrique)
+  remplirSelectRubriqueDependMarcheSelectionne()
+  {
+    var valeur_marche_selectionne = this.filtreForm.get('id_marche').value;
+
+    // Vider le SELECT pour remplir les nouvelles données du marché seléctionnée
+    this.rubriques_depend_marche_pour_filtre = [];
+
+    // Remplir le SELECT du rubrique
+    for(let rubrique of this.rubriquesList)
+    {
+      if(valeur_marche_selectionne == rubrique.id_marche)
+      {
+        this.rubriques_depend_marche_pour_filtre.push(rubrique);
+      }
+    }
+  }
+
+  // Avoir la valeur du l'élément seléctionné (du rubrique), afin de remplir le SELECT suivant (de la sous-rubrique)
+  remplirSelectSousRubriqueDependRubriqueSelectionnee()
+  {
+    var valeur_rubrique_selectionee = this.filtreForm.get('id').value;
+
+    // Vider le SELECT pour remplir les nouvelles données du rubrique seléctionnée
+    this.sous_rubriques_depend_rubrique_pour_filtre = [];
+
+    // Remplir le SELECT du sous-rubrique
+    for(let sous_rubrique of this.sousRubriquesList)
+    {
+      if(valeur_rubrique_selectionee == sous_rubrique.id_rubrique)
+      {
+        this.sous_rubriques_depend_rubrique_pour_filtre.push(sous_rubrique);
+      }
+    }
+  }
+
+  /* ---------------------------------- Fin de filtre pour la table Informations Générale  ---------------------------------- */
 
 }
