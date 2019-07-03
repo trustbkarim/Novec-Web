@@ -95,18 +95,17 @@ export class HomeComponent implements OnInit {
 
   // Filtre de date poutr la table informations générale
   filtreForm : FormGroup;
-  filtre_date_table_infos_generale : FiltreDateTableInfosGenerale;
+  distinct_periode_valeur : DistinctPeriodes;
+  
+  // Valeur du marché seléctionné depuis le select pour le filtrage
+  valeur_marche_selectionne_pour_filtre : Number;
 
-  // // Avoir la valeur de la date
-  // get fromDate() 
-  // {
-  //   return this.filtreForm.get('fromDate').value; 
-  // }
+  // Valeur de la rubrique seléctionné depuis le select pour le filtrage
+  valeur_rubrique_selectionee_pour_filtre : Number;
 
-  // get toDate() 
-  // { 
-  //   return this.filtreForm.get('toDate').value; 
-  // }
+  // Valeur de la sous-rubrique seléctionnée depuis le select pour le filtrage
+  valeur_sous_rubrique_selectionee_pour_filtre : Number;
+
   /* -------------------- Filtre de date -------------------- */
 
 
@@ -217,32 +216,27 @@ export class HomeComponent implements OnInit {
   /* --------------------------------- Variables de taux d'avancement --------------------------------- */
   constructor(private distinctPeriodesViewService : DistinctPeriodesService, private tableInformationViewService : TableInformationsViewService, private marcheViewService : MarcheViewService, private rubriqueViewService : RubriqueViewService, private sousRubriqueViewService : SousRubriqueViewService, private rubriqueService : RubriqueService, private constatService : ConstatService, private periodService : PeriodeService, private sousRubriqueService : SousRubriqueService, private marcheService : MarcheService, private formBuilder : FormBuilder, private http : HttpClient, private changeDetectorRef : ChangeDetectorRef) 
   { 
-    // Filtre de date pour la table Informations Générales
-    this.data_source_table_informations_view.filterPredicate = (data, filter) =>
+    // Filtrage de la table Information Générale ! 
+    this.pipe = new DatePipe('en');
+    this.data_source_table_informations_view.filterPredicate = (data, filtrer) =>
     {
-      if (this.filtre_date_table_infos_generale.date_debut && this.filtre_date_table_infos_generale.date_fin) 
+      if (this.date_debut && this.date_fin && this.id_marche && this.id && this.id_sous_rubrique) 
       {
-        return data.periode >= this.filtre_date_table_infos_generale.date_debut && data.periode <= this.filtre_date_table_infos_generale.date_fin;
+        console.log('infos : ', this.date_debut, this.date_fin, this.id_marche, this.id, this.id_sous_rubrique)
+        return data.periode >= this.date_debut && data.periode <= this.date_fin && data.marche == this.id_marche && data.rubrique == this.id && data.sous_rubrique == this.id_sous_rubrique
       }
       return true;
     }
-    // this.pipe = new DatePipe('en');
-    // this.data_source_table_informations_view.filterPredicate = (data, filter) =>
-    // {
-    //   if (this.fromDate && this.toDate) 
-    //   {
-    //     return data.periode >= this.fromDate && data.periode <= this.toDate;
-    //   }
-    //   return true;
-    // }
-    // this.data_source_marche = new MatTableDataSource<Marches>(this.marche_data_table)
-    // this.data_source_sous_rubrique_view = new MatTableDataSource<SousRubriqueView>(this.sous_rubrique_avancement_data_table)
   }
 
+  // Filtre de date pour la table d'Informations générale
+  filtrer() 
+  {
+    this.data_source_table_informations_view.filter = '' + Math.random();
+  }
 
   ngOnInit()
   {
-
     // Remplir le select du marché 
     this.marcheService.marcheList()
     .subscribe(
@@ -349,11 +343,11 @@ export class HomeComponent implements OnInit {
     // })
 
     // Validation de filtre de la table Informations Génerales
-    this.filtreForm = this.formBuilder.group({
-      id_marche : [null, Validators.required],
-      id : [null, Validators.required],
-      id_sous_rubrique : [null, Validators.required]
-    });
+    // this.filtreForm = this.formBuilder.group({
+    //   id_marche : [null, Validators.required],
+    //   id : [null, Validators.required],
+    //   id_sous_rubrique : [null, Validators.required]
+    // });
 
     // Validations du marché
     this.marcheForm = this.formBuilder.group({
@@ -369,15 +363,74 @@ export class HomeComponent implements OnInit {
     this.rubriqueForm = this.formBuilder.group({
       id : [null, Validators.required]
     });
+
+    // Validations pour le filtrage de la table Informations Générale
+    this.filtreForm = new FormGroup({
+      date_debut: new FormControl(null, Validators.required),
+      date_fin: new FormControl(null, Validators.required),
+      id_marche : new FormControl(null, Validators.required),
+      id : new FormControl(null, Validators.required),
+      id_sous_rubrique : new FormControl(null, Validators.required)
+    });
     
   }
 
   // Valeur du SELECT, pour le filtrage de la table Informations Générale
-  valeurForm()
-  {
-    this.filtre_date_table_infos_generale.date_debut = this.filtreForm.get('periode').value;
-    this.filtre_date_table_infos_generale.date_fin = this.filtreForm.get('periode').value;
+  get date_debut() 
+  { 
+    return this.filtreForm.get('date_debut').value; 
   }
+
+  get date_fin() 
+  { 
+    return this.filtreForm.get('date_fin').value; 
+  }
+
+  get id_marche() : String
+  {
+    // return this.filtreForm.get('id_marche').value;
+
+    var id_marche_recupere = this.filtreForm.get('id_marche').value;
+
+    for(let marche of this.marchesList)
+    {
+      if(id_marche_recupere === marche.id_marche)
+      {
+        return marche.intitule
+      }
+    }
+  }
+
+  get id() : String
+  {
+    // return this.filtreForm.get('id').value;
+    var id_rubrique_recupere = this.filtreForm.get('id').value;
+
+    for(let rubrique of this.rubriques_depend_marche_pour_filtre)
+    {
+      if(id_rubrique_recupere === rubrique.id)
+      {
+        return rubrique.lib_rubrique
+      }
+    }
+  }
+
+  get id_sous_rubrique() : String
+  {
+    // return this.filtreForm.get('id_sous_rubrique').value;
+
+    var id_sous_rubrique_recupere = this.filtreForm.get('id_sous_rubrique').value;
+
+    for(let sous_rubrique of this.sous_rubriques_depend_rubrique_pour_filtre)
+    {
+      if(id_sous_rubrique_recupere === sous_rubrique.id_sous_rubrique)
+      {
+        return sous_rubrique.lib_sous_rubrique
+      }
+    }
+  }
+
+
 
   /* --------------------------------- Fonctions de remplissage des tables --------------------------------- */
   // fonction qui remplie la table des marchés
@@ -668,17 +721,6 @@ export class HomeComponent implements OnInit {
     this.suivi_avancement_constat_sur_valeur_cible = [];
   }
 
-  // Valeur de formulaire de filtre des périodes
-  valeurFormPeriode()
-  {
-
-  }
-
-  // Filtre de date
-  filtrerDate() 
-  {
-    this.data_source_table_informations_view.filter = ''+ Math.random();
-  }
 
   /* --------------------- Filtrage (Material Angular Data Table) pour les tables : Marché, Rubrique, Sous-rubrique. --------------------- */
   // Filtre du dataTable InformationsView
@@ -730,7 +772,7 @@ export class HomeComponent implements OnInit {
   // Avoir la valeur du l'élément seléctionné (du marché), afin de remplir le SELECT suivant (de la rubrique)
   remplirSelectRubriqueDependMarcheSelectionne()
   {
-    var valeur_marche_selectionne = this.filtreForm.get('id_marche').value;
+    this.valeur_marche_selectionne_pour_filtre = this.filtreForm.get('id_marche').value;
 
     // Vider le SELECT pour remplir les nouvelles données du marché seléctionnée
     this.rubriques_depend_marche_pour_filtre = [];
@@ -738,7 +780,7 @@ export class HomeComponent implements OnInit {
     // Remplir le SELECT du rubrique
     for(let rubrique of this.rubriquesList)
     {
-      if(valeur_marche_selectionne == rubrique.id_marche)
+      if(this.valeur_marche_selectionne_pour_filtre == rubrique.id_marche)
       {
         this.rubriques_depend_marche_pour_filtre.push(rubrique);
       }
@@ -748,7 +790,7 @@ export class HomeComponent implements OnInit {
   // Avoir la valeur du l'élément seléctionné (du rubrique), afin de remplir le SELECT suivant (de la sous-rubrique)
   remplirSelectSousRubriqueDependRubriqueSelectionnee()
   {
-    var valeur_rubrique_selectionee = this.filtreForm.get('id').value;
+    this.valeur_rubrique_selectionee_pour_filtre = this.filtreForm.get('id').value;
 
     // Vider le SELECT pour remplir les nouvelles données du rubrique seléctionnée
     this.sous_rubriques_depend_rubrique_pour_filtre = [];
@@ -756,13 +798,18 @@ export class HomeComponent implements OnInit {
     // Remplir le SELECT du sous-rubrique
     for(let sous_rubrique of this.sousRubriquesList)
     {
-      if(valeur_rubrique_selectionee == sous_rubrique.id_rubrique)
+      if(this.valeur_rubrique_selectionee_pour_filtre == sous_rubrique.id_rubrique)
       {
         this.sous_rubriques_depend_rubrique_pour_filtre.push(sous_rubrique);
       }
     }
   }
 
+  // Avoir la valeur du l'élément seléctionné (du rubrique), afin de remplir le SELECT suivant (de la sous-rubrique)
+  avoirValeurSousRubrique()
+  {
+    this.valeur_sous_rubrique_selectionee_pour_filtre = this.filtreForm.get('id_sous_rubrique').value;
+  }
   /* ---------------------------------- Fin de filtre pour la table Informations Générale  ---------------------------------- */
 
 }

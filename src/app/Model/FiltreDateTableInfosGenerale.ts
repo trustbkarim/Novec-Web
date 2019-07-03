@@ -1,5 +1,9 @@
 export class FiltreDateTableInfosGenerale
 {
-    date_debut : string;
-    date_fin : string;
+    marche : string;
+    rubrique : string;
+    sous_rubrique : string;
+    periode : string;
+    valeur_cible : number;
+    valeur_constat : number;
 }

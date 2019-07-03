@@ -79,20 +79,20 @@
                     </div>
                     <div class="form-group">
                         <mat-form-field>
-                            <mat-select name="id_sous_rubrique" class="form-control" formControlName="id_sous_rubrique" placeholder="Veuillez seléctionner une rubrique">
+                            <mat-select (selectionChange)="avoirValeurSousRubrique()" name="id_sous_rubrique" class="form-control" formControlName="id_sous_rubrique" placeholder="Sous-rubrique">
                                 <mat-option *ngFor="let sousRubrique of sous_rubriques_depend_rubrique_pour_filtre" [value]="sousRubrique.id_sous_rubrique"> {{sousRubrique.lib_sous_rubrique}} </mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
                 </div>
-                <!-- <div class="table_item">
+                <div class="table_item">
                     <div class="form-group">
                         <mat-form-field>
                             <mat-label> Depuis </mat-label>
-                            <mat-select>
-                                <mat-option *ngFor="let periode of distinctPeriodes" [value]="periode.periode" formControlName="periode" class="form-control"> {{periode.periode}} </mat-option>
+                            <mat-select formControlName="date_debut" class="form-control">
+                                <mat-option *ngFor="let periode of distinctPeriodes" [value]="periode.date_debut"> {{periode.date_debut}} </mat-option>
                             </mat-select>
-                            <mat-error *ngIf="submitted && filtreForm.get('periode').hasError('required')">
+                            <mat-error *ngIf="submitted && filtreForm.get('date_debut').hasError('required')">
                                 La date est obligatoire !
                             </mat-error>
                         </mat-form-field>
@@ -101,18 +101,18 @@
                     <div class="form-group">
                         <mat-form-field>
                             <mat-label> Au </mat-label>
-                            <mat-select>
-                                <mat-option *ngFor="let periode of distinctPeriodes" [value]="periode.periode" formControlName="periode" class="form-control"> {{periode.periode}} </mat-option>
+                            <mat-select formControlName="date_fin" class="form-control">
+                                <mat-option *ngFor="let periode of distinctPeriodes" [value]="periode.date_fin"> {{periode.date_fin}} </mat-option>
                             </mat-select>
-                            <mat-error *ngIf="submitted && filtreForm.get('periode').hasError('required')">
+                            <mat-error *ngIf="submitted && filtreForm.get('date_fin').hasError('required')">
                                 La date est obligatoire !
                             </mat-error>
                         </mat-form-field>
                     </div>
-                </div> -->
+                </div>
                 <div class="table_item">
                     <div class="table_item">
-                            <button mat-raised-button color="primary" class="primary" [disabled]="filtreForm.pristine || filtreForm.invalid" (click)="filtrerDate()"> Filter </button>
+                            <button mat-raised-button color="primary" class="primary" (click)="filtrer()"> Filter </button>
                     </div>
                 </div>
             </form>
