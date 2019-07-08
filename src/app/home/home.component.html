@@ -89,7 +89,7 @@
                     <div class="form-group">
                         <mat-form-field>
                             <mat-label> Depuis </mat-label>
-                            <mat-select formControlName="date_debut" class="form-control">
+                            <mat-select  name="date_debut" formControlName="date_debut" class="form-control">
                                 <mat-option *ngFor="let periode of distinctPeriodes" [value]="periode.date_debut"> {{periode.date_debut}} </mat-option>
                             </mat-select>
                             <!-- <mat-error *ngIf="submitted && filtreForm.get('date_debut').hasError('required')">
@@ -101,7 +101,7 @@
                     <div class="form-group">
                         <mat-form-field>
                             <mat-label> Au </mat-label>
-                            <mat-select formControlName="date_fin" class="form-control">
+                            <mat-select name="date_fin" formControlName="date_fin" class="form-control">
                                 <mat-option *ngFor="let periode of distinctPeriodes" [value]="periode.date_fin"> {{periode.date_fin}} </mat-option>
                             </mat-select>
                             <!-- <mat-error *ngIf="submitted && filtreForm.get('date_fin').hasError('required')">
@@ -112,7 +112,8 @@
                 </div>
                 <div class="table_item">
                     <div class="table_item">
-                            <button mat-raised-button color="primary" class="primary" (click)="filtrer()"> Filter </button>
+                        <button mat-raised-button color="primary" class="primary" (click)="filtrer()"> Filter </button>
+                        <button mat-raised-button color="primary" class="primary" (click)="annulerFiltrage()"> Annuler le filtrage </button>
                     </div>
                 </div>
             </form>
@@ -136,11 +137,11 @@
                 </div>
             </form> -->
             <!-- Fin du filter de date -->
-            <div class="table_item">
+            <!-- <div class="table_item">
                 <mat-form-field class="filter">
                     <input matInput (keyup)="filtrerInformationsView($event.target.value)" placeholder="Que recherchez-vous ?">
                 </mat-form-field>
-            </div>
+            </div> -->
             <div class="table_item">
                 <table mat-table [dataSource]="data_source_table_informations_view" #sort_informations_view="matSort" matSort>
                 
