@@ -65,14 +65,14 @@
                 <div class="table_item">
                     <div class="form-group">
                         <mat-form-field>
-                                <mat-select (selectionChange)="remplirSelectRubriqueDependMarcheSelectionne()" name="id_marche" class="form-control" formControlName="id_marche" placeholder="Marché">
-                                    <mat-option *ngFor="let marche of marchesList" [value]="marche.id_marche"> {{marche.intitule}} </mat-option>
-                                </mat-select>
+                            <mat-select (selectionChange)="remplirSelectRubriqueDependMarcheSelectionne()" name="id_marche" class="form-control" formControlName="id_marche" placeholder="Marché">
+                                <mat-option *ngFor="let marche of marchesList" [value]="marche.id_marche"> {{marche.intitule}} </mat-option>
+                            </mat-select>
                         </mat-form-field>
                     </div>
                     <div class="form-group">
                         <mat-form-field>
-                            <mat-select (selectionChange)="remplirSelectSousRubriqueDependRubriqueSelectionnee()" name="id" class="form-control" formControlName="id" placeholder="Rubriques">
+                            <mat-select #rubriqueSelect (selectionChange)="remplirSelectSousRubriqueDependRubriqueSelectionnee()" name="id" class="form-control" formControlName="id" placeholder="Rubriques">
                                 <mat-option *ngFor="let rubrique of rubriques_depend_marche_pour_filtre" [value]="rubrique.id"> {{rubrique.lib_rubrique}} </mat-option>
                             </mat-select>
                         </mat-form-field>
@@ -111,8 +111,10 @@
                     </div>
                 </div>
                 <div class="table_item">
-                    <div class="table_item">
-                        <button mat-raised-button color="primary" class="primary" (click)="filtrer()"> Filter </button>
+                    <div class="form-group">
+                        <button mat-raised-button color="primary" class="primary" (click)="filtrer()"> Appliquer le filtrage </button>
+                    </div>
+                    <div class="form-group">
                         <button mat-raised-button color="primary" class="primary" (click)="annulerFiltrage()"> Annuler le filtrage </button>
                     </div>
                 </div>

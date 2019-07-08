@@ -28,6 +28,7 @@ import * as moment from 'moment';
 import { DistinctPeriodesService } from 'app/Services/distinct-periodes.service';
 import { DistinctPeriodes } from 'app/Model/distinctPeriodes';
 import { FiltreDateTableInfosGenerale } from 'app/Model/FiltreDateTableInfosGenerale';
+import { MatSelect } from '@angular/material';
 
 @Component({
   selector: 'app-home',
@@ -87,6 +88,9 @@ export class HomeComponent implements OnInit {
   // La pagination & Trie de la table marche view
   @ViewChild('paginator_marche_view') paginator_marche_view : MatPaginator;
   @ViewChild('sort_marche_view') sort_marche_view: MatSort;
+
+  // Identifier les SELECT (drop down list) afin de faire le RESET après avoir cliqué sur le bouton "Annuler le filtrage" 
+  @ViewChild('rubriqueSelect') rubriqueSelect : MatSelect;
 
   distinctPeriodes : DistinctPeriodes[];
 
@@ -298,8 +302,10 @@ export class HomeComponent implements OnInit {
 
   annulerFiltrage()
   {
-    this.date_debut;
-    this.date_fin;
+    this.filtreForm.reset();
+    this.rubriques_depend_marche_pour_filtre = [];
+    this.sous_rubriques_depend_rubrique_pour_filtre = [];
+    this.filtrer();
   }
 
   ngOnInit()
