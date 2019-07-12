@@ -90,7 +90,7 @@ export class HomeComponent implements OnInit {
   @ViewChild('sort_marche_view') sort_marche_view: MatSort;
 
   // Identifier les SELECT (drop down list) afin de faire le RESET après avoir cliqué sur le bouton "Annuler le filtrage" 
-  @ViewChild('rubriqueSelect') rubriqueSelect : MatSelect;
+  // @ViewChild('rubriqueSelect') rubriqueSelect : MatSelect;
 
   distinctPeriodes : DistinctPeriodes[];
 
@@ -245,13 +245,14 @@ export class HomeComponent implements OnInit {
         }
 
         // Filtrage du Data table : la seléction du marché, la rubrique, la sous-rubrique, mais sans seléction de période
-        // case (this.date_debut && this.date_fin && this.id_marche && this.id && this.id_sous_rubrique) : 
-        // {
-        //   if(this.date_debut == null && this.date_fin == null && this.id_marche != null && this.id != null && this.id_sous_rubrique != null)
-        //   {
-        //     return data.marche == this.id_marche && data.rubrique == this.id && data.sous_rubrique == this.id_sous_rubrique 
-        //   }
-        // }
+        case (this.date_debut && this.date_fin && this.id_marche && this.id && this.id_sous_rubrique) : 
+        {
+          if(this.date_debut == null && this.date_fin == null && this.id_marche != null && this.id != null && this.id_sous_rubrique != null)
+          {
+            return data.marche == this.id_marche && data.rubrique == this.id && data.sous_rubrique == this.id_sous_rubrique
+          }
+        }
+
 
         // Filtrage du Data table (seulement la période qui est seléctionnés) sans avoir seléctionnée le marché, la rubrique, la sous-rubrique, et la période
         case (this.date_debut && this.date_fin && this.id_marche && this.id && this.id_sous_rubrique) : 
@@ -861,6 +862,9 @@ export class HomeComponent implements OnInit {
         this.rubriques_depend_marche_pour_filtre.push(rubrique);
       }
     }
+
+    // Filtrage après la sélection sans avoir cliqué sur le bouton
+    this.data_source_table_informations_view.filter = '' + Math.random();
   }
 
   // Avoir la valeur du l'élément seléctionné (du rubrique), afin de remplir le SELECT suivant (de la sous-rubrique)
@@ -879,12 +883,18 @@ export class HomeComponent implements OnInit {
         this.sous_rubriques_depend_rubrique_pour_filtre.push(sous_rubrique);
       }
     }
+
+    // Filtrage après la sélection sans avoir cliqué sur le bouton
+    this.data_source_table_informations_view.filter = '' + Math.random();
   }
 
   // Avoir la valeur du l'élément seléctionné (du rubrique), afin de remplir le SELECT suivant (de la sous-rubrique)
   avoirValeurSousRubrique()
   {
     this.valeur_sous_rubrique_selectionee_pour_filtre = this.filtreForm.get('id_sous_rubrique').value;
+
+    // Filtrage après la sélection sans avoir cliqué sur le bouton
+    this.data_source_table_informations_view.filter = '' + Math.random();
   }
   /* ---------------------------------- Fin de filtre pour la table Informations Générale  ---------------------------------- */
 
