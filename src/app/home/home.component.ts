@@ -245,7 +245,7 @@ export class HomeComponent implements OnInit {
         }
 
         // Filtrage du Data table : la seléction du marché, la rubrique, la sous-rubrique, mais sans seléction de période
-        case (this.date_debut && this.date_fin && this.id_marche && this.id && this.id_sous_rubrique) : 
+        case (this.id_marche && this.id && this.id_sous_rubrique) : 
         {
           if(this.date_debut == null && this.date_fin == null && this.id_marche != null && this.id != null && this.id_sous_rubrique != null)
           {
