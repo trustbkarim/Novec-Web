@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit {
   /* -------------------------------------- Tables -------------------------------------- */
 
   // DataSource & DisplayedColumns pour la table Informations VIEW
-  displayed_columns_table_informations : string[] = ['marche', 'rubrique', 'sous_rubrique', 'periode', 'valeur_cible', 'valeur_constat'];
+  displayed_columns_table_informations : string[] = ['num_marche','marche', 'rubrique', 'sous_rubrique', 'periode', 'valeur_cible', 'valeur_constat'];
   table_informations : TableInformationsView[] = [];
   data_source_table_informations_view = new MatTableDataSource<TableInformationsView>(this.table_informations);
 
@@ -109,6 +109,10 @@ export class HomeComponent implements OnInit {
 
   // Valeur de la sous-rubrique seléctionnée depuis le select pour le filtrage
   valeur_sous_rubrique_selectionee_pour_filtre : Number;
+
+  // Valeur de la date de début & la date de fin seléctionnées depuis le SELECT pour le filtrage
+  valeur_date_debut_pour_filtre : String;
+  valeur_date_fin_pour_filtre : String;
 
   /* -------------------- Filtre de date -------------------- */
 
@@ -453,6 +457,16 @@ export class HomeComponent implements OnInit {
   get date_debut() 
   { 
     return this.filtreForm.get('date_debut').value; 
+
+    // var id_marche_recupere = this.filtreForm.get('date_debut').value;
+
+    // for(let marche of this.marchesList)
+    // {
+    //   if(id_marche_recupere === marche.id_marche)
+    //   {
+    //     return marche.intitule
+    //   }
+    // }
   }
 
   get date_fin() 

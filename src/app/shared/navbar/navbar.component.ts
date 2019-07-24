@@ -24,16 +24,19 @@ export class NavbarComponent implements OnInit {
     private sidebarVisible: boolean;
 
     constructor(private authentificatioService : AuthentificationService, location: Location,  private element: ElementRef) {
-      this.location = location;
-          this.sidebarVisible = false;
+        this.location = location;
+        this.sidebarVisible = false;
     }
 
-    ngOnInit(){
+    ngOnInit()
+    {
       this.listTitles = ROUTES.filter(listTitle => listTitle);
       const navbar: HTMLElement = this.element.nativeElement;
       this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0];
     }
-    sidebarOpen() {
+
+    sidebarOpen() 
+    {
         const toggleButton = this.toggleButton;
         const body = document.getElementsByTagName('body')[0];
         setTimeout(function(){
@@ -43,13 +46,17 @@ export class NavbarComponent implements OnInit {
 
         this.sidebarVisible = true;
     };
-    sidebarClose() {
+
+    sidebarClose() 
+    {
         const body = document.getElementsByTagName('body')[0];
         this.toggleButton.classList.remove('toggled');
         this.sidebarVisible = false;
         body.classList.remove('nav-open');
     };
-    sidebarToggle() {
+
+    sidebarToggle() 
+    {
         // const toggleButton = this.toggleButton;
         // const body = document.getElementsByTagName('body')[0];
         if (this.sidebarVisible === false) {
@@ -59,7 +66,8 @@ export class NavbarComponent implements OnInit {
         }
     };
 
-    getTitle(){
+    getTitle()
+    {
       var titlee = this.location.prepareExternalUrl(this.location.path());
       titlee = titlee.split('/').pop();
       for(var item = 0; item < this.listTitles.length; item++){
