@@ -3,6 +3,8 @@ import { AuthentificationService } from 'app/Services/Authentification/authentif
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Users } from 'app/Model/Users';
+import { NavbarService } from 'app/Services/navbar.service';
+import { FooterService } from 'app/Services/footer.service';
 
 @Component({
   selector: 'app-user',
@@ -15,7 +17,7 @@ export class UserComponent implements OnInit {
   submitted = false;
   hide = true;
 
-  constructor(private authentificationService : AuthentificationService, private formBuilder : FormBuilder, public router : Router) 
+  constructor(public footerService : FooterService, public navbarService : NavbarService, private authentificationService : AuthentificationService, private formBuilder : FormBuilder, public router : Router) 
   { }
 
   ngOnInit() 
@@ -27,6 +29,10 @@ export class UserComponent implements OnInit {
     });
 
     // this.authenticationService.logoutUser();
+
+    // Cacher la navigation
+    this.navbarService.hide();
+    this.footerService.hide();
   }
 
   // Create new user

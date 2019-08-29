@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default">
+<nav *ngIf="navbarService.visible" class="navbar navbar-default" style="background-color: #444">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" (click)="sidebarToggle()">
@@ -7,7 +7,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#" >{{getTitle()}}</a>
+            <a class="navbar-brand" routerLink="/dashboard" style="color: #fff"> <p> Dashboard </p> </a>
         </div>
         <div class="collapse navbar-collapse">
             <!-- <ul class="nav navbar-nav navbar-left">
@@ -67,8 +67,8 @@
                     </ul>
                 </li> -->
                 <li>
-                    <a href="" (click)="logout()">
-                        <p> Déconnecté</p>
+                    <a href="" (click)="logout()" style="color: #fff">
+                        <p> Déconnecté </p>
                     </a>
                 </li>
                 <li class="separator hidden-lg hidden-md"></li>

@@ -2,6 +2,7 @@
 {
     display: flex;
     flex-direction: row;
+    overflow: auto;
 
     /* width: 100%; */
     // padding: 1rem;
@@ -67,3 +68,33 @@ table {
     width: 100%;
 }
 /* ********************************** Fin Css des tables ********************************** */
+
+td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
+    padding: 7px;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+}
+
+// .mat-column-sous_rubrique{
+//     flex: 0 0 60px;
+// }
+
+// .mat-column-periode{
+//     flex: 0 0 80px;
+// }
+
+.mat-header-cell:first-child,.mat-cell:first-child{
+    flex:15%;
+}
+
+//Second column and header
+.mat-header-cell:nth-child(2),.mat-cell:nth-child(2){
+    flex:25%;
+}
+.mat-header-cell:nth-child(3),.mat-cell:nth-child(3){
+    flex:25%;
+}
+
+.mat-header-cell:nth-child(4),.mat-cell:nth-child(4){
+    flex:15%;
+}

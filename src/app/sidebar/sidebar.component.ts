@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavbarService } from 'app/Services/navbar.service';
 
 declare const $: any;
 declare interface RouteInfo {
@@ -8,7 +9,7 @@ declare interface RouteInfo {
     class: string;
 }
 export const ROUTES: RouteInfo[] = [
-    { path: '/user', title: 'User',  icon:'pe-7s-user', class: '' },
+    // { path: '/user', title: 'User',  icon:'pe-7s-user', class: '' },
     { path: '/dashboard', title: 'Dashboard',  icon: 'pe-7s-graph', class: '' },
     { path: '/constat', title: 'Constats',  icon:'pe-7s-science', class: '' },
     { path: '/marche', title: 'Marché',  icon:'pe-7s-user', class: '' },
@@ -32,7 +33,8 @@ export const ROUTES: RouteInfo[] = [
 export class SidebarComponent implements OnInit {
   menuItems: any[];
 
-  constructor() { }
+  constructor(public navbarService : NavbarService) 
+  { }
 
   ngOnInit() {
     this.menuItems = ROUTES.filter(menuItem => menuItem);

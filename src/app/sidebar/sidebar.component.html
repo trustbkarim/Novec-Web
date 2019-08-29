@@ -1,21 +1,20 @@
-
 <div class="sidebar-wrapper">
-    <div class="logo">
+    <!-- <div class="logo">
         <a href="http://www.novec.ma/" class="simple-text">
             <div class="logo-img">
                 <img src="/assets/img/novec.png"/>
             </div>
             NOVEC
         </a>
-    </div>
+    </div> -->
     <ul class="nav responsive-nav">
-        <li *ngIf="isMobileMenu()">
+        <!-- <li *ngIf="isMobileMenu()">
             <a class="dropdown-toggle" data-toggle="dropdown">
                 <i class="fa fa-dashboard"></i>
 				<p class="hidden-lg hidden-md"> Dashboard </p>
             </a>
-        </li>
-        <li class="dropdown" *ngIf="isMobileMenu()">
+        </li> -->
+        <!-- <li class="dropdown" *ngIf="isMobileMenu()">
               <a class="dropdown-toggle" data-toggle="dropdown">
                     <i class="fa fa-globe"></i>
                     <b class="caret hidden-sm hidden-xs"></b>
@@ -61,10 +60,10 @@
                 <li class="divider"></li>
                 <li><a href="#">Separated link</a></li>
               </ul>
-        </li>
+        </li> -->
         <li *ngIf="isMobileMenu()">
-            <a>
-                <p>Log out</p>
+            <a href="" (click)="logout()">
+                <p> Déconnecté </p>
             </a>
         </li>
         <li class="separator hidden-lg hidden-md" *ngIf="isMobileMenu()"></li>

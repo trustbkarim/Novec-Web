@@ -54,7 +54,7 @@ import { MatNativeDateModule } from '@angular/material';
     FormsModule,
     HttpClientModule,
     LbdModule,
-    NguiMapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=YOUR_KEY_HERE'}),
+    // NguiMapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=YOUR_KEY_HERE'}),
 
     // Material Angular
     ReactiveFormsModule,

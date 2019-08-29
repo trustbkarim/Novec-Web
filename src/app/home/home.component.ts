@@ -29,6 +29,8 @@ import { DistinctPeriodesService } from 'app/Services/distinct-periodes.service'
 import { DistinctPeriodes } from 'app/Model/distinctPeriodes';
 import { FiltreDateTableInfosGenerale } from 'app/Model/FiltreDateTableInfosGenerale';
 import { MatSelect } from '@angular/material';
+import { NavbarService } from 'app/Services/navbar.service';
+import { FooterService } from 'app/Services/footer.service';
 
 @Component({
   selector: 'app-home',
@@ -40,7 +42,8 @@ export class HomeComponent implements OnInit {
   /* -------------------------------------- Tables -------------------------------------- */
 
   // DataSource & DisplayedColumns pour la table Informations VIEW
-  displayed_columns_table_informations : string[] = ['num_marche','marche', 'rubrique', 'sous_rubrique', 'periode', 'valeur_cible', 'valeur_constat'];
+  // displayed_columns_table_informations : string[] = ['num_marche','marche', 'rubrique', 'sous_rubrique', 'periode', 'valeur_cible', 'valeur_constat'];
+  displayed_columns_table_informations : string[] = ['num_marche', 'rubrique', 'sous_rubrique', 'periode', 'valeur_cible', 'valeur_constat'];
   table_informations : TableInformationsView[] = [];
   data_source_table_informations_view = new MatTableDataSource<TableInformationsView>(this.table_informations);
 
@@ -222,7 +225,7 @@ export class HomeComponent implements OnInit {
   isLoading = false;
 
   /* --------------------------------- Variables de taux d'avancement --------------------------------- */
-  constructor(private distinctPeriodesViewService : DistinctPeriodesService, private tableInformationViewService : TableInformationsViewService, private marcheViewService : MarcheViewService, private rubriqueViewService : RubriqueViewService, private sousRubriqueViewService : SousRubriqueViewService, private rubriqueService : RubriqueService, private constatService : ConstatService, private periodService : PeriodeService, private sousRubriqueService : SousRubriqueService, private marcheService : MarcheService, private formBuilder : FormBuilder, private http : HttpClient, private changeDetectorRef : ChangeDetectorRef) 
+  constructor(public footerService : FooterService, public navbarService : NavbarService, private distinctPeriodesViewService : DistinctPeriodesService, private tableInformationViewService : TableInformationsViewService, private marcheViewService : MarcheViewService, private rubriqueViewService : RubriqueViewService, private sousRubriqueViewService : SousRubriqueViewService, private rubriqueService : RubriqueService, private constatService : ConstatService, private periodService : PeriodeService, private sousRubriqueService : SousRubriqueService, private marcheService : MarcheService, private formBuilder : FormBuilder, private http : HttpClient, private changeDetectorRef : ChangeDetectorRef) 
   { 
     // Filtrage de la table Information Générale ! 
     this.pipe = new DatePipe('en');
@@ -235,7 +238,8 @@ export class HomeComponent implements OnInit {
         {
           if(this.id_marche != null && this.id == null && this.id_sous_rubrique == null && this.date_debut == null && this.date_fin == null)
           {
-            return data.marche == this.id_marche
+            // return data.marche == this.id_marche
+            return data.num_marche == this.id_marche
           }
         }
 
@@ -244,7 +248,8 @@ export class HomeComponent implements OnInit {
         {
           if(this.date_debut == null && this.date_fin == null && this.id_marche != null && this.id != null && this.id_sous_rubrique == null)
           {
-            return data.marche == this.id_marche && data.rubrique == this.id
+            // return data.marche == this.id_marche && data.rubrique == this.id
+            return data.num_marche == this.id_marche && data.rubrique == this.id
           }
         }
 
@@ -253,7 +258,8 @@ export class HomeComponent implements OnInit {
         {
           if(this.date_debut == null && this.date_fin == null && this.id_marche != null && this.id != null && this.id_sous_rubrique != null)
           {
-            return data.marche == this.id_marche && data.rubrique == this.id && data.sous_rubrique == this.id_sous_rubrique
+            // return data.marche == this.id_marche && data.rubrique == this.id && data.sous_rubrique == this.id_sous_rubrique
+            return data.num_marche == this.id_marche && data.rubrique == this.id && data.sous_rubrique == this.id_sous_rubrique
           }
         }
 
@@ -272,7 +278,8 @@ export class HomeComponent implements OnInit {
         {
           if(this.date_debut != null && this.date_fin != null && this.id_marche != null && this.id == null && this.id_sous_rubrique == null)
           {
-            return data.periode >= this.date_debut && data.periode <= this.date_fin && data.marche == this.id_marche
+            // return data.periode >= this.date_debut && data.periode <= this.date_fin && data.marche == this.id_marche
+            return data.periode >= this.date_debut && data.periode <= this.date_fin && data.num_marche == this.id_marche
           }
         }
 
@@ -281,7 +288,8 @@ export class HomeComponent implements OnInit {
         {
           if(this.date_debut != null && this.date_fin != null && this.id_marche != null && this.id != null && this.id_sous_rubrique == null)
           {
-            return data.periode >= this.date_debut && data.periode <= this.date_fin && data.marche == this.id_marche && data.rubrique == this.id
+            // return data.periode >= this.date_debut && data.periode <= this.date_fin && data.marche == this.id_marche && data.rubrique == this.id
+            return data.periode >= this.date_debut && data.periode <= this.date_fin && data.num_marche == this.id_marche && data.rubrique == this.id
           }
         }
 
@@ -290,7 +298,9 @@ export class HomeComponent implements OnInit {
         {
           if(this.date_debut != null && this.date_fin != null && this.id_marche != null && this.id != null && this.id_sous_rubrique != null)
           {
-            return data.periode >= this.date_debut && data.periode <= this.date_fin && data.marche == this.id_marche && data.rubrique == this.id && data.sous_rubrique == this.id_sous_rubrique
+            // return data.periode >= this.date_debut && data.periode <= this.date_fin && data.marche == this.id_marche && data.rubrique == this.id && data.sous_rubrique == this.id_sous_rubrique
+            return data.periode >= this.date_debut && data.periode <= this.date_fin && data.num_marche == this.id_marche && data.rubrique == this.id && data.sous_rubrique == this.id_sous_rubrique
+
           }
         }
       }
@@ -315,6 +325,11 @@ export class HomeComponent implements OnInit {
 
   ngOnInit()
   {
+
+    // Afficher le Navbar & Footer
+    this.navbarService.show();
+    this.footerService.show();
+
     // Remplir le select du marché 
     this.marcheService.marcheList()
     .subscribe(
@@ -484,7 +499,8 @@ export class HomeComponent implements OnInit {
     {
       if(id_marche_recupere === marche.id_marche)
       {
-        return marche.intitule
+        // return marche.intitule
+        return marche.num_marche
       }
     }
   }

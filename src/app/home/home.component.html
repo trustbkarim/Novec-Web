@@ -63,13 +63,22 @@
             <!-- Filter de date -->
             <form [formGroup]="filtreForm">
                 <div class="table_item">
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <mat-form-field>
                             <mat-select (selectionChange)="remplirSelectRubriqueDependMarcheSelectionne()" name="id_marche" class="form-control" formControlName="id_marche" placeholder="Marché">
                                 <mat-option *ngFor="let marche of marchesList" [value]="marche.id_marche"> {{marche.intitule}} </mat-option>
                             </mat-select>
                         </mat-form-field>
+                    </div> -->
+
+                    <div class="form-group">
+                        <mat-form-field>
+                            <mat-select (selectionChange)="remplirSelectRubriqueDependMarcheSelectionne()" name="id_marche" class="form-control" formControlName="id_marche" placeholder="Marché">
+                                <mat-option *ngFor="let marche of marchesList" [value]="marche.id_marche"> {{marche.num_marche}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
+
                     <div class="form-group">
                         <mat-form-field>
                             <mat-select #rubriqueSelect (selectionChange)="remplirSelectSousRubriqueDependRubriqueSelectionnee()" name="id" class="form-control" formControlName="id" placeholder="Rubriques">
@@ -146,15 +155,10 @@
             </div> -->
             <div class="table_item">
                 <table mat-table [dataSource]="data_source_table_informations_view" #sort_informations_view="matSort" matSort>
-                
-                    <ng-container matColumnDef="num_marche">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Numéro Marché. </th>
-                    <td mat-cell *matCellDef="let informationView"> {{informationView.num_marche}} </td>
-                    </ng-container>
 
-                    <ng-container matColumnDef="marche">
+                    <ng-container matColumnDef="num_marche" sticky>
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Marché. </th>
-                    <td mat-cell *matCellDef="let informationView"> {{informationView.marche}} </td>
+                    <td mat-cell *matCellDef="let informationView"> {{informationView.num_marche}} </td>
                     </ng-container>
         
                     <ng-container matColumnDef="rubrique">
@@ -172,7 +176,7 @@
                     <td mat-cell *matCellDef="let informationView"> {{informationView.periode }} </td>
                     </ng-container>
 
-                    <ng-container matColumnDef="valeur_cible">
+                    <!-- <ng-container matColumnDef="valeur_cible">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Date début. </th>
                     <td mat-cell *matCellDef="let informationView"> {{informationView.date_debut }} </td>
                     </ng-container>
@@ -180,9 +184,19 @@
                     <ng-container matColumnDef="valeur_constat">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Date fin. </th>
                     <td mat-cell *matCellDef="let informationView"> {{informationView.date_fin }} </td>
+                    </ng-container> -->
+
+                    <ng-container matColumnDef="valeur_cible">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qte ciblé. </th>
+                    <td mat-cell *matCellDef="let informationView"> {{informationView.valeur_cible }} </td>
+                    </ng-container>
+    
+                    <ng-container matColumnDef="valeur_constat">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qte réalisée. </th>
+                    <td mat-cell *matCellDef="let informationView"> {{informationView.valeur_constat }} </td>
                     </ng-container>
 
-                    <tr mat-header-row *matHeaderRowDef="displayed_columns_table_informations" ></tr>
+                    <tr mat-header-row *matHeaderRowDef="displayed_columns_table_informations"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayed_columns_table_informations;"></tr>
                 </table>
             </div>

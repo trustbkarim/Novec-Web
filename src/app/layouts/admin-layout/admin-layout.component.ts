@@ -6,6 +6,9 @@ import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import PerfectScrollbar from 'perfect-scrollbar';
 import { Observable } from 'rxjs';
+import { NavbarService } from 'app/Services/navbar.service';
+import { FooterService } from 'app/Services/footer.service';
+import { setStyles } from '@angular/animations/browser/src/util';
 
 @Component({
   selector: 'app-admin-layout',
@@ -17,9 +20,20 @@ export class AdminLayoutComponent implements OnInit {
   private lastPoppedUrl: string;
   private yScrollStack: number[] = [];
 
-  constructor( public location: Location, private router: Router) {}
+  constructor(public footerService : FooterService, public navbarService : NavbarService, public location: Location, private router: Router) {}
 
   ngOnInit() {
+
+    // Cacher la navigation pour la page de login
+    this.navbarService.show();
+    this.footerService.show();
+
+    // if(this.router.url === '/user')
+    // {
+    //     let element = document.getElementsByClassName('main-panel') as HTMLCollectionOf<HTMLElement>;
+    //     element.;
+    // }
+    
     // console.log(this.router)
       const isWindows = navigator.platform.indexOf('Win') > -1 ? true : false;
 

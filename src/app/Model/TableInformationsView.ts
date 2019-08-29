@@ -1,9 +1,10 @@
 export class TableInformationsView 
 {
-    marche : string;
-    rubrique : string;
-    sous_rubrique : string;
-    periode : string;
-    valeur_cible : number;
-    valeur_constat : number;
+    // marche : string;
+    num_marche : String;
+    rubrique : String;
+    sous_rubrique : String;
+    periode : String;
+    valeur_cible : Number;
+    valeur_constat : Number;
 }
