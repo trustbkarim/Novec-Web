@@ -43,7 +43,7 @@ export class HomeComponent implements OnInit {
 
   // DataSource & DisplayedColumns pour la table Informations VIEW
   // displayed_columns_table_informations : string[] = ['num_marche','marche', 'rubrique', 'sous_rubrique', 'periode', 'valeur_cible', 'valeur_constat'];
-  displayed_columns_table_informations : string[] = ['num_marche', 'rubrique', 'sous_rubrique', 'periode', 'valeur_cible', 'valeur_constat'];
+  displayed_columns_table_informations : string[] = ['num_marche', 'rubrique', 'sous_rubrique', 'valeur_cible', 'periode',  'valeur_constat'];
   table_informations : TableInformationsView[] = [];
   data_source_table_informations_view = new MatTableDataSource<TableInformationsView>(this.table_informations);
 
@@ -53,17 +53,18 @@ export class HomeComponent implements OnInit {
   data_source_marche = new MatTableDataSource<Marches>(this.marche_data_table);
 
   // DataSource & DisplayedColumns pour la table SOUS-RUBRIQUE VIEW
-  displayed_columns_sous_rubrique_avancement: string[] = ['marche', 'rubrique', 'sous_rubrique', 'periode', 'taux_avancement_sous_rubrique', 'progress_bar'];
+  displayed_columns_sous_rubrique_avancement: string[] = ['marche', 'rubrique', 'sous_rubrique', 'periode', 'taux_avancement_sous_rubrique'];
   sous_rubrique_avancement_data_table : SousRubriqueView[] = [];
   data_source_sous_rubrique_view = new MatTableDataSource<SousRubriqueView>(this.sous_rubrique_avancement_data_table);
 
   // DataSource & DisplayedColumns pour la table RUBRIQUE VIEW
-  displayed_columns_rubrique_avancement : string[] = ['marche', 'rubrique', 'periode', 'taux_avancement_rubrique', 'progress_bar'];
+  displayed_columns_rubrique_avancement : string[] = ['marche', 'rubrique', 'periode', 'taux_avancement_rubrique'];
   rubrique_avancement_data_table : RubriqueView[] = [];
   data_source_rubrique_view = new MatTableDataSource<RubriqueView>(this.rubrique_avancement_data_table);
 
   // DataSource & DisplayedColumns pour la table MARCHE VIEW
-  displayed_columns_marche_avancement : string[] = ['marche', 'periode', 'taux_avancement_marche', 'progress_bar'];
+  // displayed_columns_marche_avancement : string[] = ['marche', 'periode', 'taux_avancement_marche', 'progress_bar'];
+  displayed_columns_marche_avancement : string[] = ['marche', 'montant_marche', 'duree_mois', 'periode', 'taux_avancement_marche'];
   marche_avancement_data_table : MarcheView[] = [];
   data_source_marche_view = new MatTableDataSource<MarcheView>(this.marche_avancement_data_table);
 

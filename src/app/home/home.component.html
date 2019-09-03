@@ -172,7 +172,7 @@
                     </ng-container>
 
                     <ng-container matColumnDef="periode">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Période. </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Jusqu'à période. </th>
                     <td mat-cell *matCellDef="let informationView"> {{informationView.periode }} </td>
                     </ng-container>
 
@@ -187,13 +187,13 @@
                     </ng-container> -->
 
                     <ng-container matColumnDef="valeur_cible">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qte ciblé. </th>
-                    <td mat-cell *matCellDef="let informationView"> {{informationView.valeur_cible }} </td>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Qte marché. </th>
+                    <td mat-cell *matCellDef="let informationView"> {{informationView.valeur_cible }} {{informationView.unite}} </td>
                     </ng-container>
     
                     <ng-container matColumnDef="valeur_constat">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Qte réalisée. </th>
-                    <td mat-cell *matCellDef="let informationView"> {{informationView.valeur_constat }} </td>
+                    <td mat-cell *matCellDef="let informationView"> {{informationView.valeur_constat }} {{informationView.unite}} </td>
                     </ng-container>
 
                     <tr mat-header-row *matHeaderRowDef="displayed_columns_table_informations"></tr>
@@ -225,24 +225,35 @@
             <div class="table_item">
                 <table mat-table [dataSource]="data_source_marche_view" #sort_marche_view="matSort" matSort>
                     
-                    <ng-container matColumnDef="marche">
+                    <ng-container matColumnDef="marche" sticky>
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Marché. </th>
                     <td mat-cell *matCellDef="let marcheView"> {{marcheView.marche}} </td>
                     </ng-container>
+
+                    <ng-container matColumnDef="montant_marche">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Montant. </th>
+                    <td mat-cell *matCellDef="let marcheView"> {{ marcheView.montant_marche | number : '1.2-2'}} MAD </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="duree_mois">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Durée en mois. </th>
+                    <td mat-cell *matCellDef="let marcheView"> {{marcheView.duree_mois}} </td>
+                    </ng-container>
         
                     <ng-container matColumnDef="periode">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Période. </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Jusqu'à. </th>
                     <td mat-cell *matCellDef="let marcheView"> {{marcheView.periode}} </td>
                     </ng-container>
         
-                    <ng-container matColumnDef="taux_avancement_marche">
+                    <!-- <ng-container matColumnDef="taux_avancement_marche">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Taux avancement. </th>
                     <td mat-cell *matCellDef="let marcheView"> {{marcheView.taux_avancement_marche | number : '1.1-1' }} % </td>
-                    </ng-container>
+                    </ng-container> -->
 
-                    <ng-container matColumnDef="progress_bar">
+                    <ng-container matColumnDef="taux_avancement_marche">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Avancement. </th>
-                        <td mat-cell *matCellDef="let marcheView"> 
+                        <td mat-cell *matCellDef="let marcheView">
+                            <div style="text-align: center"> {{ marcheView.taux_avancement_marche | number : '1.1-1'}} % </div> 
                             <mat-progress-bar [value]="marcheView.taux_avancement_marche" mode="determinate"> 
                                     {{ marcheView.taux_avancement_marche }}
                             </mat-progress-bar>
@@ -281,7 +292,7 @@
             <div class="table_item">
                 <table mat-table [dataSource]="data_source_rubrique_view" #sort_rubrique_view="matSort" matSort>
                     
-                    <ng-container matColumnDef="marche">
+                    <ng-container matColumnDef="marche" sticky>
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Marché. </th>
                     <td mat-cell *matCellDef="let rubriqueView"> {{rubriqueView.marche}} </td>
                     </ng-container>
@@ -292,21 +303,22 @@
                     </ng-container>
 
                     <ng-container matColumnDef="periode">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Période. </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Jusqu'à. </th>
                     <td mat-cell *matCellDef="let rubriqueView"> {{rubriqueView.periode}} </td>
                     </ng-container>
 
-                    <ng-container matColumnDef="taux_avancement_rubrique">
+                    <!-- <ng-container matColumnDef="taux_avancement_rubrique">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Taux avancement. </th>
                     <td mat-cell *matCellDef="let rubriqueView"> {{rubriqueView.taux_avancement_rubrique | number : '1.1-1'}} % </td>
-                    </ng-container>
+                    </ng-container> -->
 
-                    <ng-container matColumnDef="progress_bar">
+                    <ng-container matColumnDef="taux_avancement_rubrique">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Avancement. </th>
-                        <td mat-cell *matCellDef="let rubriqueView"> 
-                            <mat-progress-bar [value]="rubriqueView.taux_avancement_rubrique" mode="determinate"> 
+                        <td mat-cell *matCellDef="let rubriqueView">
+                            <div style="text-align: center"> {{rubriqueView.taux_avancement_rubrique | number : '1.1-1'}} % </div> 
+                            <mat-progress-bar [value]="rubriqueView.taux_avancement_rubrique" mode="determinate">
                                 {{ rubriqueView.taux_avancement_rubrique }}
-                            </mat-progress-bar>
+                            </mat-progress-bar> 
                         </td>
                     </ng-container>
 
@@ -362,14 +374,15 @@
                     <td mat-cell *matCellDef="let sousRubriqueView"> {{sousRubriqueView.periode}} </td>
                     </ng-container>
 
-                    <ng-container matColumnDef="taux_avancement_sous_rubrique">
+                    <!-- <ng-container matColumnDef="taux_avancement_sous_rubrique">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Taux avancement. </th>
                     <td mat-cell *matCellDef="let sousRubriqueView"> {{sousRubriqueView.taux_avancement_sous_rubrique | number : '1.1-1'}} % </td>
-                    </ng-container>
+                    </ng-container> -->
 
-                    <ng-container matColumnDef="progress_bar">
+                    <ng-container matColumnDef="taux_avancement_sous_rubrique">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Avancement. </th>
                         <td mat-cell *matCellDef="let sousRubriqueView"> 
+                            <div style="text-align: center"> {{  sousRubriqueView.taux_avancement_sous_rubrique | number : '1.1-1'}} % </div>
                             <mat-progress-bar [value]="sousRubriqueView.taux_avancement_sous_rubrique" mode="determinate"> 
                                     {{ sousRubriqueView.taux_avancement_sous_rubrique }}
                             </mat-progress-bar>
