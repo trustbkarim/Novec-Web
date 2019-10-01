@@ -13,6 +13,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { AppComponent } from './app.component';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { MAT_DATE_LOCALE } from '@angular/material';
 
 
 
@@ -33,7 +34,9 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
     AppComponent,
     AdminLayoutComponent,
   ],
-  providers: [],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'en-AU' }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

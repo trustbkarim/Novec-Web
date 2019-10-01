@@ -22,20 +22,16 @@
             <th mat-header-cell *matHeaderCellDef> Durée en jour </th>
             <td mat-cell *matCellDef="let marche"> {{marche.duree_jour}} </td>
             </ng-container>
-
             <ng-container matColumnDef="duree_mois">
                 <th mat-header-cell *matHeaderCellDef> Durée en mois </th>
                 <td mat-cell *matCellDef="let marche"> {{marche.duree_mois}} </td>
             </ng-container>
-
             <ng-container matColumnDef="montant_marche">
                 <th mat-header-cell *matHeaderCellDef> Montant marché </th>
                 <td mat-cell *matCellDef="let marche"> {{marche.montant_marche}} </td>
             </ng-container>
-
             <tr mat-header-row *matHeaderRowDef="displayed_columns_marche" ></tr>
             <tr mat-row *matRowDef="let row; columns: displayed_columns_marche;"></tr>
-
         </table>
     </div>
     <div class="table_item">
@@ -59,9 +55,51 @@
             <div class="table_item">
                 <h3> Informations générales ! </h3>
             </div>
+            <!-- <div class="table_item">
+                <mat-form-field class="filter">
+                    <input matInput (keyup)="filtrerInformationsView($event.target.value)" placeholder="Que recherchez-vous ?">
+                </mat-form-field>
+            </div> -->
 
             <!-- Filter de date -->
             <form [formGroup]="filtreForm">
+                
+                <div class="table_item">
+                    <div class="form-group">
+                        <mat-form-field>
+                            <!-- <mat-label> Depuis </mat-label>
+                            <mat-select  name="date_debut" formControlName="date_debut" class="form-control">
+                                <mat-option *ngFor="let periode of distinctPeriodes" [value]="periode.date_debut"> {{periode.date_debut}} </mat-option>
+                            </mat-select> -->
+                            <!-- <mat-error *ngIf="submitted && filtreForm.get('date_debut').hasError('required')">
+                                La date est obligatoire !
+                            </mat-error> -->
+
+                            <input matInput [matDatepicker]="date_debut" name="date_debut" formControlName="date_debut" class="form-control" placeholder="choisissez une date">
+                            <mat-datepicker-toggle matSuffix [for]="date_debut"></mat-datepicker-toggle>
+                            <mat-datepicker #date_debut></mat-datepicker>
+
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-group">
+                        <mat-form-field>
+                            <!-- <mat-label> Au </mat-label>
+                            <mat-select name="date_fin" formControlName="date_fin" class="form-control">
+                                <mat-option *ngFor="let periode of distinctPeriodes" [value]="periode.date_fin"> {{periode.date_fin}} </mat-option>
+                            </mat-select> -->
+                            <!-- <mat-error *ngIf="submitted && filtreForm.get('date_fin').hasError('required')">
+                                La date est obligatoire !
+                            </mat-error> -->
+
+                            <input matInput [matDatepicker]="date_fin" name="date_fin" formControlName="date_fin" class="form-control" placeholder="choisissez une date">
+                            <mat-datepicker-toggle matSuffix [for]="date_fin"></mat-datepicker-toggle>
+                            <mat-datepicker #date_fin></mat-datepicker>
+                            
+                        </mat-form-field>
+                    </div>
+                </div>
+                
                 <div class="table_item">
                     <!-- <div class="form-group">
                         <mat-form-field>
@@ -71,6 +109,7 @@
                         </mat-form-field>
                     </div> -->
 
+                    
                     <div class="form-group">
                         <mat-form-field>
                             <mat-select (selectionChange)="remplirSelectRubriqueDependMarcheSelectionne()" name="id_marche" class="form-control" formControlName="id_marche" placeholder="Marché">
@@ -94,31 +133,7 @@
                         </mat-form-field>
                     </div>
                 </div>
-                <div class="table_item">
-                    <div class="form-group">
-                        <mat-form-field>
-                            <mat-label> Depuis </mat-label>
-                            <mat-select  name="date_debut" formControlName="date_debut" class="form-control">
-                                <mat-option *ngFor="let periode of distinctPeriodes" [value]="periode.date_debut"> {{periode.date_debut}} </mat-option>
-                            </mat-select>
-                            <!-- <mat-error *ngIf="submitted && filtreForm.get('date_debut').hasError('required')">
-                                La date est obligatoire !
-                            </mat-error> -->
-                        </mat-form-field>
-                    </div>
-
-                    <div class="form-group">
-                        <mat-form-field>
-                            <mat-label> Au </mat-label>
-                            <mat-select name="date_fin" formControlName="date_fin" class="form-control">
-                                <mat-option *ngFor="let periode of distinctPeriodes" [value]="periode.date_fin"> {{periode.date_fin}} </mat-option>
-                            </mat-select>
-                            <!-- <mat-error *ngIf="submitted && filtreForm.get('date_fin').hasError('required')">
-                                La date est obligatoire !
-                            </mat-error> -->
-                        </mat-form-field>
-                    </div>
-                </div>
+                
                 <div class="table_item">
                     <div class="form-group">
                         <button mat-raised-button color="primary" class="primary" (click)="filtrer()"> Filtrer par date </button>
@@ -180,7 +195,6 @@
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Date début. </th>
                     <td mat-cell *matCellDef="let informationView"> {{informationView.date_debut }} </td>
                     </ng-container>
-
                     <ng-container matColumnDef="valeur_constat">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Date fin. </th>
                     <td mat-cell *matCellDef="let informationView"> {{informationView.date_fin }} </td>
@@ -439,13 +453,7 @@
         </div>
     </div>
 </form>
-
-
-
 <hr>
-
-
-
 <form [formGroup]="marcheForm">
     <div class="container">
         <div class="item">
@@ -467,14 +475,7 @@
         </div>
     </div>
 </form>
-
-
-
 <hr>
-
-
-
-
 <form [formGroup]="rubriqueForm">
     <div class="container">
         <div class="item">
@@ -496,13 +497,7 @@
         </div>
     </div>
 </form>
-
-
-
 <hr>
-
-
-
 <form [formGroup]="sousRubriqueForm">
     <div class="container">
         <div class="item">
@@ -524,8 +519,6 @@
         </div>
     </div>
 </form>
-
-
 <div *ngIf="chart">
     <canvas id="canvas">{{ chart }}</canvas>
 </div> -->

@@ -41,6 +41,8 @@
     width: 100%;
     padding: 2rem 0 2rem 0;
 
+    // overflow: auto;
+
     .filter
     {
         width: 50%;
@@ -83,18 +85,52 @@ td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
 //     flex: 0 0 80px;
 // }
 
-.mat-header-cell:first-child,.mat-cell:first-child{
-    flex:15%;
+// .mat-header-cell:first-child,.mat-cell:first-child{
+//     flex:15%;
+// }
+
+// //Second column and header
+// .mat-header-cell:nth-child(2),.mat-cell:nth-child(2){
+//     flex:25%;
+// }
+// .mat-header-cell:nth-child(3),.mat-cell:nth-child(3){
+//     flex:25%;
+// }
+
+// .mat-header-cell:nth-child(4),.mat-cell:nth-child(4){
+//     flex:15%;
+// }
+
+
+/* ----------------- Width des colonnes --------------- */
+.mat-column-periode {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    // flex: 0 0 9% !important;
+    width: 9% !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+
+    word-break: break-word;
+
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
 }
 
-//Second column and header
-.mat-header-cell:nth-child(2),.mat-cell:nth-child(2){
-    flex:25%;
-}
-.mat-header-cell:nth-child(3),.mat-cell:nth-child(3){
-    flex:25%;
-}
+.mat-column-valeur_cible {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    // flex: 0 0 9% !important;
+    width: 9% !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
 
-.mat-header-cell:nth-child(4),.mat-cell:nth-child(4){
-    flex:15%;
+    word-break: break-word;
+
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
 }

@@ -104,7 +104,7 @@ export class HomeComponent implements OnInit {
   // Filtre de date poutr la table informations générale
   filtreForm : FormGroup;
   distinct_periode_valeur : DistinctPeriodes;
-  
+
   // Valeur du marché seléctionné depuis le select pour le filtrage
   valeur_marche_selectionne_pour_filtre : Number;
 
@@ -232,78 +232,90 @@ export class HomeComponent implements OnInit {
     this.pipe = new DatePipe('en');
     this.data_source_table_informations_view.filterPredicate = (data, filtrer) =>
     {
-      switch(this.date_debut, this.date_fin, this.id_marche, this.id, this.id_sous_rubrique)
+      switch(this.id_marche, this.id, this.id_sous_rubrique)
       {
         // Filtrage du Data table (seulement le marché qui est seléctionné) sans avoir seléctionnée la rubrique, la sous-rubrique, et la période
-        case (this.id_marche && this.id && this.id_sous_rubrique && this.date_debut && this.date_fin) : 
+        case (this.id_marche, this.id, this.id_sous_rubrique) : 
         {
-          if(this.id_marche != null && this.id == null && this.id_sous_rubrique == null && this.date_debut == null && this.date_fin == null)
+          if(this.id_marche != null && this.id == null && this.id_sous_rubrique == null)
           {
+            console.log("le cas de seléction du marché :", this.id_marche, this.id, this.id_sous_rubrique, this.date_debut, this.date_fin)
             // return data.marche == this.id_marche
-            return data.num_marche == this.id_marche
+            return data.num_marche == this.id_marche && data.periode >= this.date_debut && data.periode <= this.date_fin
           }
         }
 
         // Filtrage du Data table (Le marché et la rubrique qui sont seléctionnées) sans avoir seléctionnée la sous-rubrique, et la période
-        case (this.date_debut && this.date_fin && this.id_marche && this.id && this.id_sous_rubrique) : 
+        case (this.id_marche && this.id && this.id_sous_rubrique) : 
         {
-          if(this.date_debut == null && this.date_fin == null && this.id_marche != null && this.id != null && this.id_sous_rubrique == null)
+          if(this.id_marche != null && this.id != null && this.id_sous_rubrique == null)
           {
+            console.log("le cas de seléction du marché & rubrique :", this.id_marche, this.id, this.id_sous_rubrique, this.date_debut, this.date_fin)
             // return data.marche == this.id_marche && data.rubrique == this.id
-            return data.num_marche == this.id_marche && data.rubrique == this.id
+            return data.num_marche == this.id_marche && data.rubrique == this.id && data.periode >= this.date_debut && data.periode <= this.date_fin
           }
         }
 
         // Filtrage du Data table : la seléction du marché, la rubrique, la sous-rubrique, mais sans seléction de période
-        case (this.id_marche && this.id && this.id_sous_rubrique) : 
+        case(this.id_marche && this.id && this.id_sous_rubrique) : 
         {
-          if(this.date_debut == null && this.date_fin == null && this.id_marche != null && this.id != null && this.id_sous_rubrique != null)
+          if(this.id_marche != null && this.id != null && this.id_sous_rubrique != null)
           {
+            console.log("le cas de seléction du marché & rubrique & sous-rubrique:", this.id_marche, this.id, this.id_sous_rubrique, this.date_debut, this.date_fin)
             // return data.marche == this.id_marche && data.rubrique == this.id && data.sous_rubrique == this.id_sous_rubrique
-            return data.num_marche == this.id_marche && data.rubrique == this.id && data.sous_rubrique == this.id_sous_rubrique
+            return data.num_marche == this.id_marche && data.rubrique == this.id && data.sous_rubrique == this.id_sous_rubrique && data.periode >= this.date_debut && data.periode <= this.date_fin
           }
         }
-
 
         // Filtrage du Data table (seulement la période qui est seléctionnés) sans avoir seléctionnée le marché, la rubrique, la sous-rubrique, et la période
-        case (this.date_debut && this.date_fin && this.id_marche && this.id && this.id_sous_rubrique) : 
-        {
-          if(this.date_debut != null && this.date_fin != null && this.id_marche == null && this.id == null && this.id_sous_rubrique == null)
-          {
-            return data.periode >= this.date_debut && data.periode <= this.date_fin
-          }
-        }
+        // case (this.date_debut, this.date_fin) : 
+        // {
+        //   if(this.date_debut != null && this.date_fin != null)
+        //   {
+        //     console.log("le cas de seléction du période :", this.id_marche, this.id, this.id_sous_rubrique, this.date_debut, this.date_fin)
+        //     return data.periode >= this.date_debut && data.periode <= this.date_fin
+        //   }
+        // }
+
 
         // Filtrage du Data table (Le marché et la période qui sont seléctionnées) sans avoir seléctionnée la rubrique et la sous-rubrique : Marché, période
-        case (this.date_debut && this.date_fin && this.id_marche && this.id && this.id_sous_rubrique) : 
-        {
-          if(this.date_debut != null && this.date_fin != null && this.id_marche != null && this.id == null && this.id_sous_rubrique == null)
-          {
-            // return data.periode >= this.date_debut && data.periode <= this.date_fin && data.marche == this.id_marche
-            return data.periode >= this.date_debut && data.periode <= this.date_fin && data.num_marche == this.id_marche
-          }
-        }
+        
+        /* ****************************************************** Switch 2 ****************************************************** */
 
-        // Filtrage du Data table (Le marché, la rubrique, et la période qui sont seléctionnées) sans avoir seléctionné la sous-rubrique : Période, Marché, Rubrique 
-        case (this.date_debut && this.date_fin && this.id_marche && this.id && this.id_sous_rubrique) :
-        {
-          if(this.date_debut != null && this.date_fin != null && this.id_marche != null && this.id != null && this.id_sous_rubrique == null)
-          {
-            // return data.periode >= this.date_debut && data.periode <= this.date_fin && data.marche == this.id_marche && data.rubrique == this.id
-            return data.periode >= this.date_debut && data.periode <= this.date_fin && data.num_marche == this.id_marche && data.rubrique == this.id
-          }
-        }
+        // case (this.id_marche && this.id && this.id_sous_rubrique) : 
+        // {
+        //   if(this.id_marche != null && this.id == null && this.id_sous_rubrique == null)
+        //   {
+        //     console.log("le cas de seléction du marché & date ", this.id_marche, this.date_debut, this.date_fin)
+        //     return data.num_marche == this.id_marche && data.periode >= this.date_debut && data.periode <= this.date_fin
+        //     // return data.periode >= this.date_debut && data.periode <= this.date_fin && data.marche == this.id_marche
+        //     // return data.num_marche == this.id_marche && data.periode >= this.date_debut && data.periode <= this.date_fin
+        //   }
+        // }
 
-        // Filtrage du Data table avec la seléction de toutes les propriétés : Période, Marché, Rubrique, sous-rubrique
-        case (this.date_debut && this.date_fin && this.id_marche && this.id && this.id_sous_rubrique) :
-        {
-          if(this.date_debut != null && this.date_fin != null && this.id_marche != null && this.id != null && this.id_sous_rubrique != null)
-          {
-            // return data.periode >= this.date_debut && data.periode <= this.date_fin && data.marche == this.id_marche && data.rubrique == this.id && data.sous_rubrique == this.id_sous_rubrique
-            return data.periode >= this.date_debut && data.periode <= this.date_fin && data.num_marche == this.id_marche && data.rubrique == this.id && data.sous_rubrique == this.id_sous_rubrique
+        // // Filtrage du Data table (Le marché, la rubrique, et la période qui sont seléctionnées) sans avoir seléctionné la sous-rubrique : Période, Marché, Rubrique 
+        // case (this.date_debut && this.date_fin && this.id_marche && this.id && this.id_sous_rubrique) :
+        // {
+        //   if(this.date_debut != null && this.date_fin != null && this.id_marche != null && this.id != null && this.id_sous_rubrique == null)
+        //   {
+        //     console.log("le cas de seléction du marché & rub & date:", this.id_marche, this.id, this.id_sous_rubrique, this.date_debut, this.date_fin)
+        //     // return data.periode >= this.date_debut && data.periode <= this.date_fin && data.marche == this.id_marche && data.rubrique == this.id
+        //     return data.periode >= this.date_debut && data.periode <= this.date_fin && data.num_marche == this.id_marche && data.rubrique == this.id
+        //   }
+        // }
 
-          }
-        }
+        // // Filtrage du Data table avec la seléction de toutes les propriétés : Période, Marché, Rubrique, sous-rubrique
+        // case (this.date_debut && this.date_fin && this.id_marche && this.id && this.id_sous_rubrique) :
+        // {
+        //   if(this.date_debut != null && this.date_fin != null && this.id_marche != null && this.id != null && this.id_sous_rubrique != null)
+        //   {
+        //     console.log("le cas de seléction du tout:", this.id_marche, this.id, this.id_sous_rubrique, this.date_debut, this.date_fin)
+        //     // return data.periode >= this.date_debut && data.periode <= this.date_fin && data.marche == this.id_marche && data.rubrique == this.id && data.sous_rubrique == this.id_sous_rubrique
+        //     return data.periode >= this.date_debut && data.periode <= this.date_fin && data.num_marche == this.id_marche && data.rubrique == this.id && data.sous_rubrique == this.id_sous_rubrique
+
+        //   }
+        // }
+        /* ****************************************************** Switch 2 ****************************************************** */
       }
 
       return true;
@@ -470,24 +482,20 @@ export class HomeComponent implements OnInit {
   }
 
   // Valeur du SELECT, pour le filtrage de la table Informations Générale
-  get date_debut() 
+  // get date_debut() 
+  get date_debut() : String
   { 
-    return this.filtreForm.get('date_debut').value; 
-
-    // var id_marche_recupere = this.filtreForm.get('date_debut').value;
-
-    // for(let marche of this.marchesList)
-    // {
-    //   if(id_marche_recupere === marche.id_marche)
-    //   {
-    //     return marche.intitule
-    //   }
-    // }
+    var x = this.filtreForm.get('date_debut').value;
+    return x = moment(x).format('YYYY-MM-DD');
   }
 
-  get date_fin() 
+  // get date_fin() 
+  get date_fin() : String
   { 
-    return this.filtreForm.get('date_fin').value; 
+    var y = this.filtreForm.get('date_fin').value;
+    return y = moment(y).format('YYYY-MM-DD');
+
+    // return this.filtreForm.get('date_fin').value; 
   }
 
   get id_marche() : String
@@ -829,22 +837,23 @@ export class HomeComponent implements OnInit {
 
   /* --------------------- Filtrage (Material Angular Data Table) pour les tables : Marché, Rubrique, Sous-rubrique. --------------------- */
   // Filtre du dataTable InformationsView
-  filtrerInformationsView(filterValue: string)
-  {
-    this.data_source_table_informations_view.filter = filterValue.trim().toLowerCase();
+  // filtrerInformationsView(filterValue: string)
+  // {
+  //   this.data_source_table_informations_view.filter = filterValue.trim().toLowerCase();
     
-    if (this.data_source_table_informations_view.paginator) 
-    {
-      this.data_source_table_informations_view.paginator.firstPage();
-    }
-  }
+  //   if (this.data_source_table_informations_view.paginator) 
+  //   {
+  //     this.data_source_table_informations_view.paginator.firstPage();
+  //   }
+  // }
 
   // Filtre du dataTable marcheView
   filtrerMarcheView(filterValue: string) 
   {
     this.data_source_marche_view.filter = filterValue.trim().toLowerCase();
 
-    if (this.data_source_marche_view.paginator) {
+    if (this.data_source_marche_view.paginator) 
+    {
       this.data_source_marche_view.paginator.firstPage();
     }
   }
@@ -854,7 +863,8 @@ export class HomeComponent implements OnInit {
   {
     this.data_source_rubrique_view.filter = filterValue.trim().toLowerCase();
     
-    if (this.data_source_rubrique_view.paginator) {
+    if (this.data_source_rubrique_view.paginator) 
+    {
       this.data_source_rubrique_view.paginator.firstPage();
     }
   }
@@ -864,7 +874,8 @@ export class HomeComponent implements OnInit {
   {
     this.data_source_sous_rubrique_view.filter = filterValue.trim().toLowerCase();
     
-    if (this.data_source_sous_rubrique_view.paginator) {
+    if (this.data_source_sous_rubrique_view.paginator) 
+    {
       this.data_source_sous_rubrique_view.paginator.firstPage();
     }
   }
